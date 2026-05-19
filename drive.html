@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knowledge Drive — Işık to Villages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-deep:       #1A0F26;
+      --bg-plum:       #2A1B38;
+      --bg-card:       #33204A;
+      --bg-card-hover: #3D2757;
+      --accent:        #00E5FF;
+      --accent-dim:    #00B8CC;
+      --accent-glow:   rgba(0, 229, 255, 0.18);
+      --accent-glow2:  rgba(0, 229, 255, 0.08);
+      --text-white:    #FFFFFF;
+      --text-cream:    #F5F5DC;
+      --text-muted:    #B0A0C8;
+      --border:        rgba(0, 229, 255, 0.15);
+      --border-strong: rgba(0, 229, 255, 0.35);
+      --font-main:     'Inter', sans-serif;
+      --font-display:  'Poppins', sans-serif;
+      --radius-sm:     8px;
+      --radius-md:     16px;
+      --radius-lg:     24px;
+      --transition:    0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-card:   0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--font-main); background-color: var(--bg-deep); color: var(--text-cream); line-height: 1.6; overflow-x: hidden; }
+    h1, h2, h3, h4, h5 { font-family: var(--font-display); color: var(--text-white); line-height: 1.2; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-dim); border-radius: 3px; }
+
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.5;
+    }
+
+    /* NAVBAR */
+    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 5%; height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(26, 15, 38, 0.82); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); box-shadow: 0 4px 32px rgba(0,0,0,0.3); }
+    .nav-logo { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; letter-spacing: 0.04em; color: var(--text-white); display: flex; align-items: center; gap: 10px; }
+    .nav-logo .logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--bg-deep); font-size: 1rem; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 0.88rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.02em; transition: color var(--transition); position: relative; }
+    .nav-links a.active, .nav-links a:hover { color: var(--text-white); }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width var(--transition); border-radius: 2px; }
+    .nav-links a.active::after, .nav-links a:hover::after { width: 100%; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: var(--radius-sm); font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: 2px solid transparent; transition: var(--transition); white-space: nowrap; letter-spacing: 0.02em; }
+    .btn-solid { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
+    .btn-solid:hover { background: transparent; color: var(--accent); box-shadow: 0 0 24px var(--accent-glow); }
+    .btn-outline { background: transparent; color: var(--accent); border-color: var(--accent); }
+    .btn-outline:hover { background: var(--accent); color: var(--bg-deep); }
+    .nav-cta { padding: 10px 22px; font-size: 0.85rem; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--text-cream); border-radius: 2px; transition: var(--transition); }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-mobile { display: none; position: fixed; top: 72px; left: 0; right: 0; background: rgba(26, 15, 38, 0.97); backdrop-filter: blur(20px); padding: 24px 5% 32px; border-bottom: 1px solid var(--border); flex-direction: column; gap: 20px; z-index: 999; }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a { font-size: 1.05rem; font-weight: 500; color: var(--text-cream); padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .nav-mobile .btn { margin-top: 8px; width: fit-content; }
+
+    /* HERO */
+    .drive-hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .drive-hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .drive-orb-1 {
+      position: absolute;
+      width: 700px; height: 700px;
+      background: var(--accent);
+      border-radius: 50%;
+      filter: blur(160px);
+      opacity: 0.07;
+      top: -200px; right: -200px;
+      animation: orbFloat 10s ease-in-out infinite;
+    }
+    .drive-orb-2 {
+      position: absolute;
+      width: 500px; height: 500px;
+      background: #7B2FBE;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.1;
+      bottom: -100px; left: -100px;
+      animation: orbFloat 12s ease-in-out infinite reverse;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(20px, -30px) scale(1.05); }
+    }
+
+    .drive-hero-inner {
+      position: relative;
+      z-index: 1;
+      padding: 140px 0 100px;
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    /* Coming soon badge */
+    .coming-soon-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 229, 255, 0.06);
+      border: 1px solid var(--border-strong);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      width: fit-content;
+      margin-bottom: 28px;
+    }
+    .coming-soon-badge .pulse-dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulseDot 1.8s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(0,229,255,0.6); }
+      50% { opacity: 0.6; transform: scale(0.9); box-shadow: 0 0 0 8px rgba(0,229,255,0); }
+    }
+
+    .drive-hero-h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .drive-hero-h1 span { color: var(--accent); }
+
+    .drive-hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      max-width: 480px;
+      margin-bottom: 40px;
+    }
+
+    /* Notify form */
+    .notify-form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .notify-form input {
+      flex: 1;
+      min-width: 220px;
+      padding: 13px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-cream);
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .notify-form input:focus { border-color: var(--accent); }
+    .notify-form input::placeholder { color: var(--text-muted); }
+
+    .notify-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .notify-note i { color: var(--accent); font-size: 0.75rem; }
+
+    /* Hero preview mockup */
+    .drive-mockup {
+      position: relative;
+    }
+    .mockup-window {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .mockup-titlebar {
+      background: var(--bg-plum);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dot-row { display: flex; gap: 6px; }
+    .dot-row span { width: 10px; height: 10px; border-radius: 50%; display: block; }
+    .dot-row span:nth-child(1) { background: #FF5F57; }
+    .dot-row span:nth-child(2) { background: #FFBD2E; }
+    .dot-row span:nth-child(3) { background: #28CA41; }
+    .mockup-title { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; flex: 1; text-align: center; }
+
+    .mockup-body { padding: 24px; filter: blur(2px); opacity: 0.5; pointer-events: none; }
+    .mockup-search-bar {
+      background: var(--bg-plum);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .mockup-search-bar i { color: var(--text-muted); font-size: 0.82rem; }
+    .mockup-search-bar span { font-size: 0.85rem; color: var(--text-muted); }
+
+    .mockup-filter-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .mockup-pill { padding: 4px 14px; border-radius: 100px; border: 1px solid var(--border); font-size: 0.75rem; color: var(--text-muted); }
+    .mockup-pill.active { background: var(--accent-glow2); border-color: var(--border-strong); color: var(--accent); }
+
+    .mockup-file-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .mockup-file-card {
+      background: var(--bg-plum);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mockup-file-icon {
+      width: 36px; height: 36px;
+      background: var(--accent-glow2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .mockup-file-text { overflow: hidden; }
+    .mockup-file-name { font-size: 0.78rem; font-weight: 600; color: var(--text-cream); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mockup-file-meta { font-size: 0.7rem; color: var(--text-muted); }
+
+    /* Lock overlay */
+    .mockup-lock-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: rgba(26, 15, 38, 0.7);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius-lg);
+    }
+    .lock-icon {
+      width: 64px; height: 64px;
+      background: var(--accent-glow2);
+      border: 2px solid var(--border-strong);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      color: var(--accent);
+    }
+    .lock-label {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-white);
+    }
+    .lock-sub { font-size: 0.82rem; color: var(--text-muted); }
+
+    /* FEATURES SECTION */
+    .features-section { padding: 100px 0; }
+    .features-header { text-align: center; max-width: 580px; margin: 0 auto 64px; }
+    .section-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .section-label::before { content: ''; display: block; width: 28px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 16px; }
+    .section-title span { color: var(--accent); }
+    .section-sub { font-size: 1.05rem; color: var(--text-muted); line-height: 1.8; }
+
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .feature-card:hover { border-color: var(--border-strong); transform: translateY(-4px); box-shadow: var(--shadow-card); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      width: 52px; height: 52px;
+      background: var(--accent-glow2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      transition: var(--transition);
+    }
+    .feature-card:hover .feature-icon { background: var(--accent-glow); border-color: var(--border-strong); }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+    .feature-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
+    .feature-soon {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-glow2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 3px 10px;
+    }
+
+    /* HOW IT WORKS */
+    .how-section { padding: 100px 0; background: var(--bg-plum); }
+    .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .how-steps { display: flex; flex-direction: column; gap: 0; }
+    .how-step {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .how-step:last-child { border-bottom: none; }
+    .step-num {
+      width: 44px; height: 44px;
+      background: var(--accent-glow2);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .step-body h4 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .step-body p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
+
+    .how-visual {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+    }
+    .how-visual h5 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; }
+    .category-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+    .category-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--bg-plum);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .category-chip i { color: var(--accent); font-size: 0.78rem; }
+
+    .upload-zone {
+      border: 2px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .upload-zone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent-glow2);
+    }
+    .upload-zone i { font-size: 2.5rem; color: var(--accent); margin-bottom: 14px; display: block; position: relative; }
+    .upload-zone p { font-size: 0.9rem; color: var(--text-muted); position: relative; margin-bottom: 4px; }
+    .upload-zone span { font-size: 0.78rem; color: var(--text-muted); opacity: 0.6; position: relative; }
+    .upload-lock-msg {
+      position: absolute;
+      inset: 0;
+      background: rgba(26, 15, 38, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      border-radius: var(--radius-md);
+    }
+
+    /* DIVIDER */
+    .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--border-strong), transparent); }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* FOOTER */
+    footer { background: var(--bg-deep); border-top: 1px solid var(--border); padding: 48px 0 32px; }
+    .footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.8; margin: 14px 0 20px; max-width: 280px; }
+    .social-links { display: flex; gap: 12px; }
+    .social-link { width: 38px; height: 38px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem; transition: var(--transition); cursor: pointer; }
+    .social-link:hover { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+    .footer-col h5 { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-cream); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a { font-size: 0.88rem; color: var(--text-muted); transition: color var(--transition); display: flex; align-items: center; gap: 6px; }
+    .footer-col ul li a:hover { color: var(--accent); }
+    .footer-col ul li a i { font-size: 0.7rem; }
+    .footer-bottom { padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-size: 0.82rem; color: var(--text-muted); }
+    .footer-copy a { color: var(--accent); }
+    .footer-badge { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted); }
+    .footer-badge i { color: var(--accent); }
+    .footer-handle { font-size: 0.82rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; opacity: 0.75; transition: opacity var(--transition); }
+    .footer-handle:hover { opacity: 1; }
+    #back-top { position: fixed; bottom: 32px; right: 32px; width: 44px; height: 44px; background: var(--accent); color: var(--bg-deep); border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; opacity: 0; transform: translateY(16px); transition: var(--transition); z-index: 900; box-shadow: 0 4px 20px rgba(0,229,255,0.3); }
+    #back-top.visible { opacity: 1; transform: translateY(0); }
+    #back-top:hover { transform: translateY(-3px); }
+
+    @media (max-width: 1024px) { .drive-hero-inner { grid-template-columns: 1fr; gap: 48px; } .drive-mockup { max-width: 560px; } .features-grid { grid-template-columns: 1fr 1fr; } .how-grid { grid-template-columns: 1fr; } .footer-inner { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 768px) { .nav-links, .nav-cta { display: none; } .nav-hamburger { display: flex; } .features-grid { grid-template-columns: 1fr; } .footer-inner { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; } .notify-form { flex-direction: column; } .notify-form input { width: 100%; } }
+  </style>
+</head>
+
+<body>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+      IŞIK TO <span>VILLAGES</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#get-involved">Get Involved</a></li>
+      <li><a href="index.html#donate">Donate</a></li>
+      <li><a href="drive.html" class="active">Drive</a></li>
+      <li><a href="blog.html">Blog</a></li>
+    </ul>
+    <a href="index.html#get-involved" class="btn btn-solid nav-cta">
+      <i class="fas fa-user-plus"></i> Join Club
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav-mobile" id="mobile-menu">
+    <a href="index.html" onclick="closeMobile()">Home</a>
+    <a href="index.html#projects" onclick="closeMobile()">Projects</a>
+    <a href="index.html#get-involved" onclick="closeMobile()">Get Involved</a>
+    <a href="index.html#donate" onclick="closeMobile()">Donate</a>
+    <a href="drive.html" onclick="closeMobile()">Drive</a>
+    <a href="blog.html" onclick="closeMobile()">Blog</a>
+    <a href="index.html#get-involved" class="btn btn-solid" onclick="closeMobile()">
+      <i class="fas fa-user-plus"></i> Join Club
+    </a>
+  </div>
+
+  <!-- ═══════════════════════════════
+       HERO
+  ════════════════════════════════════ -->
+  <div class="drive-hero">
+    <div class="drive-hero-bg">
+      <div class="drive-orb-1"></div>
+      <div class="drive-orb-2"></div>
+    </div>
+
+    <div class="drive-hero-inner">
+
+      <!-- Left: Content -->
+      <div>
+        <div class="coming-soon-badge">
+          <span class="pulse-dot"></span>
+          Coming Soon
+        </div>
+
+        <h1 class="drive-hero-h1">
+          A Drive Full of<br />
+          <span>Knowledge for Every School.</span>
+        </h1>
+
+        <p class="drive-hero-sub">
+          Students upload their textbooks, course notes, and past papers. Village schools browse and download them for free. One shared platform — turning every studied page into a resource for a child who needs it.
+        </p>
+
+        <form class="notify-form" onsubmit="handleNotify(event)">
+          <input type="email" id="notify-email" placeholder="Enter your email to be notified at launch" required />
+          <button type="submit" class="btn btn-solid">
+            <i class="fas fa-bell"></i> Notify Me
+          </button>
+        </form>
+
+        <p class="notify-note" id="notify-msg">
+          <i class="fas fa-lock"></i> We'll send one email when the platform goes live. Nothing else.
+        </p>
+      </div>
+
+      <!-- Right: Mockup -->
+      <div class="drive-mockup">
+        <div class="mockup-window">
+          <div class="mockup-titlebar">
+            <div class="dot-row">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="mockup-title">Işık Knowledge Drive &nbsp;·&nbsp; Beta Preview</span>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-search-bar">
+              <i class="fas fa-search"></i>
+              <span>Search textbooks, notes, subjects…</span>
+            </div>
+            <div class="mockup-filter-row">
+              <div class="mockup-pill active">All Subjects</div>
+              <div class="mockup-pill">Mathematics</div>
+              <div class="mockup-pill">Science</div>
+              <div class="mockup-pill">Turkish</div>
+              <div class="mockup-pill">English</div>
+            </div>
+            <div class="mockup-file-grid">
+              <div class="mockup-file-card">
+                <div class="mockup-file-icon"><i class="fas fa-file-pdf"></i></div>
+                <div class="mockup-file-text">
+                  <div class="mockup-file-name">Math Grade 5.pdf</div>
+                  <div class="mockup-file-meta">2.4 MB · 120 pages</div>
+                </div>
+              </div>
+              <div class="mockup-file-card">
+                <div class="mockup-file-icon"><i class="fas fa-file-lines"></i></div>
+                <div class="mockup-file-text">
+                  <div class="mockup-file-name">Science Notes.pdf</div>
+                  <div class="mockup-file-meta">1.1 MB · 48 pages</div>
+                </div>
+              </div>
+              <div class="mockup-file-card">
+                <div class="mockup-file-icon"><i class="fas fa-file-pdf"></i></div>
+                <div class="mockup-file-text">
+                  <div class="mockup-file-name">Turkish Lit. Notes</div>
+                  <div class="mockup-file-meta">890 KB · 32 pages</div>
+                </div>
+              </div>
+              <div class="mockup-file-card">
+                <div class="mockup-file-icon"><i class="fas fa-file-lines"></i></div>
+                <div class="mockup-file-text">
+                  <div class="mockup-file-name">History Textbook</div>
+                  <div class="mockup-file-meta">3.8 MB · 200 pages</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lock overlay -->
+          <div class="mockup-lock-overlay">
+            <div class="lock-icon"><i class="fas fa-lock"></i></div>
+            <div class="lock-label">Coming Soon</div>
+            <div class="lock-sub">Platform under construction</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════════════════
+       FEATURES
+  ════════════════════════════════════ -->
+  <section class="features-section">
+    <div class="container">
+      <div class="features-header reveal">
+        <span class="section-label"><i class="fas fa-sparkles"></i> What's Coming</span>
+        <h2 class="section-title">Everything the <span>Platform</span> Will Do</h2>
+        <p class="section-sub">The Knowledge Drive will be a dedicated space to share and access academic resources — built by students, for students and village schools alike.</p>
+      </div>
+
+      <div class="features-grid">
+
+        <div class="feature-card reveal">
+          <div class="feature-icon"><i class="fas fa-upload"></i></div>
+          <h3>Student Uploads</h3>
+          <p>University students can upload their textbooks, lecture notes, past exam papers, and study guides directly to the platform in PDF or document format.</p>
+          <span class="feature-soon">Planned</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon"><i class="fas fa-school"></i></div>
+          <h3>School Access Portal</h3>
+          <p>Teachers and school administrators from partner village schools can browse, preview, and download any resource. No account required — completely free to access.</p>
+          <span class="feature-soon">Planned</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon"><i class="fas fa-filter"></i></div>
+          <h3>Subject & Grade Filtering</h3>
+          <p>Resources are organized by subject area, grade level, and type (textbook, notes, exercises) so schools can find exactly what their students need.</p>
+          <span class="feature-soon">Planned</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon"><i class="fas fa-shield-check"></i></div>
+          <h3>Moderation & Quality Review</h3>
+          <p>Every uploaded file goes through a review by our team before going live. We check for accuracy, completeness, and appropriateness for the intended grade level.</p>
+          <span class="feature-soon">Planned</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+          <h3>Impact Tracking</h3>
+          <p>See how many times your uploaded materials have been downloaded, and which schools have accessed them. Know exactly how far your notes have traveled.</p>
+          <span class="feature-soon">Planned</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+          <h3>Contributor Recognition</h3>
+          <p>Students whose resources are downloaded 50+ times earn a "Knowledge Contributor" badge and will be featured in our blog and end-of-year impact report.</p>
+          <span class="feature-soon">Planned</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════════════════
+       HOW IT WILL WORK
+  ════════════════════════════════════ -->
+  <section class="how-section">
+    <div class="container">
+      <div class="how-grid">
+
+        <div>
+          <span class="section-label"><i class="fas fa-route"></i> The Process</span>
+          <h2 class="section-title" style="margin-bottom:8px;">How It Will <span>Work</span></h2>
+          <p class="section-sub" style="margin-bottom:40px;">Simple for students to contribute. Simple for schools to use.</p>
+
+          <div class="how-steps">
+            <div class="how-step reveal">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <h4>A Student Uploads a File</h4>
+                <p>Any enrolled student logs in with their university email and uploads a PDF — a textbook, their semester notes, or a past exam. They add the subject, grade level, and a short description.</p>
+              </div>
+            </div>
+            <div class="how-step reveal reveal-delay-1">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <h4>Our Team Reviews It</h4>
+                <p>The file goes into a moderation queue. A club member reviews it within 48 hours to confirm it's appropriate, accurate, and complete. Approved files go live immediately.</p>
+              </div>
+            </div>
+            <div class="how-step reveal reveal-delay-2">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <h4>Schools Browse and Download</h4>
+                <p>Partner schools across Turkey can visit the Drive at any time, filter by subject or grade, and download anything they need — no registration, no cost, no limits.</p>
+              </div>
+            </div>
+            <div class="how-step reveal reveal-delay-3">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <h4>Impact Gets Measured</h4>
+                <p>Download counts are tracked and shared back with contributors, so students can see the direct reach of their materials. We publish an annual impact summary on the blog.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="how-visual reveal">
+          <h5>What You Can Upload</h5>
+          <div class="category-chips">
+            <div class="category-chip"><i class="fas fa-calculator"></i> Mathematics</div>
+            <div class="category-chip"><i class="fas fa-flask"></i> Science</div>
+            <div class="category-chip"><i class="fas fa-book"></i> Turkish Literature</div>
+            <div class="category-chip"><i class="fas fa-globe"></i> Geography</div>
+            <div class="category-chip"><i class="fas fa-landmark"></i> History</div>
+            <div class="category-chip"><i class="fas fa-language"></i> English</div>
+            <div class="category-chip"><i class="fas fa-palette"></i> Arts</div>
+            <div class="category-chip"><i class="fas fa-ellipsis"></i> Other</div>
+          </div>
+
+          <div class="upload-zone">
+            <i class="fas fa-cloud-arrow-up"></i>
+            <p>Drag & drop your file here</p>
+            <span>PDF, DOCX, PPT · Max 50 MB</span>
+            <div class="upload-lock-msg">
+              <i class="fas fa-lock"></i> Upload available at launch
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+            IŞIK TO <span>VILLAGES</span>
+          </a>
+          <p>A student club at FMV Işık University dedicated to bridging campus energy with rural education across Turkey.</p>
+          <div class="social-links">
+            <a class="social-link" href="https://www.instagram.com/group4helpschools" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a class="social-link" href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a class="social-link" href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+            <li><a href="index.html#projects"><i class="fas fa-chevron-right"></i> Projects</a></li>
+            <li><a href="index.html#get-involved"><i class="fas fa-chevron-right"></i> Get Involved</a></li>
+            <li><a href="index.html#donate"><i class="fas fa-chevron-right"></i> Donate</a></li>
+            <li><a href="drive.html"><i class="fas fa-chevron-right"></i> Drive</a></li>
+            <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms of Use</a></li>
+            <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+            <li><a href="index.html#suggestions"><i class="fas fa-chevron-right"></i> Suggestions</a></li>
+            <li><a href="mailto:isiktovillages@isik.edu.tr"><i class="fas fa-envelope"></i> Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 <a href="index.html">Işık to Villages</a>. All rights reserved.</p>
+        <a href="https://www.instagram.com/project__404" target="_blank" rel="noopener noreferrer" class="footer-handle">@project__404</a>
+        <div class="footer-badge"><i class="fas fa-heart"></i> Made with purpose by Işık University students</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    const backTop = document.getElementById('back-top');
+    window.addEventListener('scroll', () => { backTop.classList.toggle('visible', window.scrollY > 60); }, { passive: true });
+
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handleNotify(e) {
+      e.preventDefault();
+      const msg = document.getElementById('notify-msg');
+      const btn = e.target.querySelector('button');
+      msg.innerHTML = '<i class="fas fa-check-circle"></i> You\'re on the list! We\'ll email you the moment the Drive goes live.';
+      msg.style.color = 'var(--accent)';
+      btn.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
+      btn.disabled = true;
+    }
+
+    const revealEls = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>

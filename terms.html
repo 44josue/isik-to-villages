@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Use — Işık to Villages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-deep:       #1A0F26;
+      --bg-plum:       #2A1B38;
+      --bg-card:       #33204A;
+      --bg-card-hover: #3D2757;
+      --accent:        #00E5FF;
+      --accent-dim:    #00B8CC;
+      --accent-glow:   rgba(0, 229, 255, 0.18);
+      --accent-glow2:  rgba(0, 229, 255, 0.08);
+      --text-white:    #FFFFFF;
+      --text-cream:    #F5F5DC;
+      --text-muted:    #B0A0C8;
+      --border:        rgba(0, 229, 255, 0.15);
+      --border-strong: rgba(0, 229, 255, 0.35);
+      --font-main:     'Inter', sans-serif;
+      --font-display:  'Poppins', sans-serif;
+      --radius-sm:     8px;
+      --radius-md:     16px;
+      --radius-lg:     24px;
+      --transition:    0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-card:   0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--font-main); background-color: var(--bg-deep); color: var(--text-cream); line-height: 1.6; overflow-x: hidden; }
+    h1, h2, h3, h4, h5 { font-family: var(--font-display); color: var(--text-white); line-height: 1.2; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-dim); border-radius: 3px; }
+
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* NAVBAR */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 5%; height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: var(--transition);
+      background: rgba(26, 15, 38, 0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+    }
+    .nav-logo {
+      font-family: var(--font-display); font-weight: 800; font-size: 1.15rem;
+      letter-spacing: 0.04em; color: var(--text-white);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo .logo-icon {
+      width: 36px; height: 36px; background: var(--accent);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; color: var(--bg-deep); font-size: 1rem;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 0.88rem; font-weight: 500; color: var(--text-muted);
+      letter-spacing: 0.02em; transition: color var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--accent);
+      transition: width var(--transition); border-radius: 2px;
+    }
+    .nav-links a:hover { color: var(--text-white); }
+    .nav-links a:hover::after { width: 100%; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: var(--radius-sm);
+      font-family: var(--font-display); font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; border: 2px solid transparent;
+      transition: var(--transition); white-space: nowrap; letter-spacing: 0.02em;
+    }
+    .btn-solid { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
+    .btn-solid:hover { background: transparent; color: var(--accent); box-shadow: 0 0 24px var(--accent-glow); }
+    .nav-cta { padding: 10px 22px; font-size: 0.85rem; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--text-cream); border-radius: 2px; transition: var(--transition); }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-mobile {
+      display: none; position: fixed; top: 72px; left: 0; right: 0;
+      background: rgba(26, 15, 38, 0.97); backdrop-filter: blur(20px);
+      padding: 24px 5% 32px; border-bottom: 1px solid var(--border);
+      flex-direction: column; gap: 20px; z-index: 999;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a { font-size: 1.05rem; font-weight: 500; color: var(--text-cream); padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .nav-mobile .btn { margin-top: 8px; width: fit-content; }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 140px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: var(--accent);
+      border-radius: 50%;
+      filter: blur(160px);
+      opacity: 0.06;
+      pointer-events: none;
+    }
+    .page-header-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .page-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .page-breadcrumb a { color: var(--accent); transition: opacity var(--transition); }
+    .page-breadcrumb a:hover { opacity: 0.8; }
+    .page-breadcrumb i { font-size: 0.65rem; }
+    .page-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+    .page-title span { color: var(--accent); }
+    .page-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .page-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .page-meta-item i { color: var(--accent); font-size: 0.8rem; }
+
+    /* DIVIDER */
+    .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--border-strong), transparent); }
+
+    /* LEGAL CONTENT */
+    .legal-layout {
+      padding: 64px 0 100px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* Sticky sidebar TOC */
+    .legal-toc {
+      position: sticky;
+      top: 96px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+    }
+    .legal-toc h6 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .legal-toc ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .legal-toc ul li a {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      border-left: 2px solid transparent;
+    }
+    .legal-toc ul li a:hover {
+      background: var(--accent-glow2);
+      color: var(--accent);
+      border-left-color: var(--accent);
+    }
+
+    /* Legal body */
+    .legal-body { max-width: 760px; }
+    .legal-section { margin-bottom: 56px; scroll-margin-top: 96px; }
+    .legal-section h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .legal-section h2 .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent-glow2);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .legal-section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-cream);
+      margin: 20px 0 10px;
+    }
+    .legal-section p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+    .legal-section ul {
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .legal-section ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .legal-section ul li::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 9px;
+    }
+    .legal-highlight {
+      background: var(--accent-glow2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 0.92rem;
+      color: var(--text-cream);
+      line-height: 1.7;
+    }
+
+    /* FOOTER */
+    footer { background: var(--bg-deep); border-top: 1px solid var(--border); padding: 48px 0 32px; }
+    .footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.8; margin: 14px 0 20px; max-width: 280px; }
+    .social-links { display: flex; gap: 12px; }
+    .social-link { width: 38px; height: 38px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem; transition: var(--transition); cursor: pointer; }
+    .social-link:hover { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+    .footer-col h5 { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-cream); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a { font-size: 0.88rem; color: var(--text-muted); transition: color var(--transition); display: flex; align-items: center; gap: 6px; }
+    .footer-col ul li a:hover { color: var(--accent); }
+    .footer-col ul li a i { font-size: 0.7rem; }
+    .footer-bottom { padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-size: 0.82rem; color: var(--text-muted); }
+    .footer-copy a { color: var(--accent); }
+    .footer-badge { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted); }
+    .footer-badge i { color: var(--accent); }
+    .footer-handle { font-size: 0.82rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; opacity: 0.75; transition: opacity var(--transition); }
+    .footer-handle:hover { opacity: 1; }
+
+    /* BACK TO TOP */
+    #back-top { position: fixed; bottom: 32px; right: 32px; width: 44px; height: 44px; background: var(--accent); color: var(--bg-deep); border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; opacity: 0; transform: translateY(16px); transition: var(--transition); z-index: 900; box-shadow: 0 4px 20px rgba(0,229,255,0.3); }
+    #back-top.visible { opacity: 1; transform: translateY(0); }
+    #back-top:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,229,255,0.4); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .legal-layout { grid-template-columns: 1fr; }
+      .legal-toc { position: static; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+      IŞIK TO <span>VILLAGES</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#get-involved">Get Involved</a></li>
+      <li><a href="index.html#donate">Donate</a></li>
+      <li><a href="drive.html">Drive</a></li>
+      <li><a href="blog.html">Blog</a></li>
+    </ul>
+    <a href="index.html#get-involved" class="btn btn-solid nav-cta">
+      <i class="fas fa-user-plus"></i> Join Club
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav-mobile" id="mobile-menu">
+    <a href="index.html" onclick="closeMobile()">Home</a>
+    <a href="index.html#projects" onclick="closeMobile()">Projects</a>
+    <a href="index.html#get-involved" onclick="closeMobile()">Get Involved</a>
+    <a href="index.html#donate" onclick="closeMobile()">Donate</a>
+    <a href="drive.html" onclick="closeMobile()">Drive</a>
+    <a href="blog.html" onclick="closeMobile()">Blog</a>
+    <a href="index.html#get-involved" class="btn btn-solid" onclick="closeMobile()">
+      <i class="fas fa-user-plus"></i> Join Club
+    </a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="container">
+      <div class="page-header-inner">
+        <div class="page-breadcrumb">
+          <a href="index.html">Home</a>
+          <i class="fas fa-chevron-right"></i>
+          <span>Terms of Use</span>
+        </div>
+        <h1 class="page-title">Terms of <span>Use</span></h1>
+        <div class="page-meta">
+          <div class="page-meta-item">
+            <i class="fas fa-calendar-alt"></i>
+            Last updated: May 18, 2026
+          </div>
+          <div class="page-meta-item">
+            <i class="fas fa-clock"></i>
+            5 min read
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- LEGAL CONTENT -->
+  <div class="container">
+    <div class="legal-layout">
+
+      <!-- Sidebar TOC -->
+      <aside class="legal-toc">
+        <h6>Contents</h6>
+        <ul>
+          <li><a href="#intro">1. Introduction</a></li>
+          <li><a href="#membership">2. Club Membership</a></li>
+          <li><a href="#donations">3. Donations</a></li>
+          <li><a href="#conduct">4. Code of Conduct</a></li>
+          <li><a href="#content">5. Website Content</a></li>
+          <li><a href="#ip">6. Intellectual Property</a></li>
+          <li><a href="#liability">7. Limitation of Liability</a></li>
+          <li><a href="#changes">8. Changes to Terms</a></li>
+          <li><a href="#contact">9. Contact Us</a></li>
+        </ul>
+      </aside>
+
+      <!-- Body -->
+      <main class="legal-body">
+
+        <div class="legal-section" id="intro">
+          <h2><span class="section-num">1</span> Introduction</h2>
+          <p>Welcome to Işık to Villages ("we," "us," or "our"), a student-led social initiative operating under FMV Işık University. By accessing our website, submitting a registration form, making a donation, or participating in any of our programs, you agree to be bound by these Terms of Use.</p>
+          <p>These terms govern your relationship with Işık to Villages and outline your rights and responsibilities as a visitor, member, or supporter of our initiative. Please read them carefully.</p>
+          <div class="legal-highlight">
+            Işık to Villages is a non-commercial student club. All activities are conducted in good faith for the purpose of supporting rural education in Turkey. We are not a licensed NGO or registered charity.
+          </div>
+        </div>
+
+        <div class="legal-section" id="membership">
+          <h2><span class="section-num">2</span> Club Membership</h2>
+          <p>By submitting the registration form on our website, you are expressing your interest in joining the Işık to Villages club. Membership is subject to approval by the club's organizing team.</p>
+          <h3>Eligibility</h3>
+          <ul>
+            <li>Membership is open to currently enrolled students of FMV Işık University.</li>
+            <li>All applicants must provide a valid university email address ending in <strong style="color:var(--text-cream)">@isik.edu.tr</strong>.</li>
+            <li>Applicants must be in good academic standing as defined by the university.</li>
+          </ul>
+          <h3>Member Responsibilities</h3>
+          <ul>
+            <li>Members are expected to actively participate in club activities and events.</li>
+            <li>Members must represent the club in a professional and respectful manner.</li>
+            <li>Members must respect the privacy and dignity of the communities we serve.</li>
+            <li>Membership may be revoked for conduct that is deemed harmful to the club or its mission.</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="donations">
+          <h2><span class="section-num">3</span> Donations</h2>
+          <p>Donations and contributions made to Işık to Villages — whether monetary or in-kind — are used exclusively to support the educational programs and supply drives described on our website.</p>
+          <h3>Monetary Donations</h3>
+          <ul>
+            <li>All monetary donations are processed securely. We do not store payment card information on our servers.</li>
+            <li>Donations are non-refundable unless there was a technical error in processing.</li>
+            <li>Tier selections (Supporter, Contributor, Champion) are indicative of expected impact and do not constitute a legally binding contract.</li>
+          </ul>
+          <h3>In-Kind Donations (Books, Stationery)</h3>
+          <ul>
+            <li>Physical donations dropped off at our campus collection points become the property of Işık to Villages for distribution.</li>
+            <li>We reserve the right to assess the condition of donated items and decline items that are damaged or unsuitable.</li>
+            <li>We cannot guarantee that specific donated items will be delivered to a specific recipient school.</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="conduct">
+          <h2><span class="section-num">4</span> Code of Conduct</h2>
+          <p>All participants, members, and users of this website are expected to uphold the following standards of conduct:</p>
+          <ul>
+            <li>Treat all individuals — team members, school communities, donors, and visitors — with respect and dignity.</li>
+            <li>Do not submit false, misleading, or fraudulent information in any form on this website.</li>
+            <li>Do not attempt to gain unauthorized access to any part of this website or our systems.</li>
+            <li>Do not use our platforms for commercial solicitation, spam, or unauthorized advertising.</li>
+            <li>Respect the privacy of children and communities featured in our content — do not redistribute personal information about beneficiaries.</li>
+          </ul>
+          <p>Violations of this code may result in removal from club activities, revocation of membership, and reporting to university authorities if warranted.</p>
+        </div>
+
+        <div class="legal-section" id="content">
+          <h2><span class="section-num">5</span> Website Content</h2>
+          <p>The information on this website — including project descriptions, donation goals, statistics, and program details — is provided in good faith for informational purposes. We strive for accuracy but cannot guarantee that all information is current, complete, or error-free.</p>
+          <p>Funding goals (e.g., ₺50,000 campaign target) and progress figures are updated periodically and may not reflect real-time data. Statistics about students reached and books collected are estimates based on ongoing programs.</p>
+        </div>
+
+        <div class="legal-section" id="ip">
+          <h2><span class="section-num">6</span> Intellectual Property</h2>
+          <p>All original content on this website — including text, graphics, logos, and the overall design — is the property of Işık to Villages or its contributing members and is protected under applicable copyright law.</p>
+          <ul>
+            <li>You may share links to this website and quote brief excerpts with proper attribution.</li>
+            <li>You may not reproduce, republish, or distribute our content for commercial purposes without written permission.</li>
+            <li>The Işık to Villages name and logo may not be used to imply endorsement without our written consent.</li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="liability">
+          <h2><span class="section-num">7</span> Limitation of Liability</h2>
+          <p>Işık to Villages is a student-run initiative with limited resources. To the fullest extent permitted by law:</p>
+          <ul>
+            <li>We are not liable for any indirect, incidental, or consequential damages arising from your use of this website.</li>
+            <li>We do not guarantee that this website will be available, uninterrupted, or error-free at all times.</li>
+            <li>We are not responsible for the content of external websites linked from our pages.</li>
+          </ul>
+          <p>Our total liability for any claim arising under these Terms shall not exceed the amount you donated in the 12 months preceding the claim.</p>
+        </div>
+
+        <div class="legal-section" id="changes">
+          <h2><span class="section-num">8</span> Changes to Terms</h2>
+          <p>We may update these Terms of Use from time to time to reflect changes in our activities or legal requirements. When we do, we will revise the "Last updated" date at the top of this page.</p>
+          <p>Continued use of our website or participation in club activities after changes are posted constitutes acceptance of the updated terms. We encourage you to check this page periodically.</p>
+        </div>
+
+        <div class="legal-section" id="contact">
+          <h2><span class="section-num">9</span> Contact Us</h2>
+          <p>If you have any questions or concerns about these Terms of Use, please contact us:</p>
+          <ul>
+            <li>Email: <a href="mailto:isiktovillages@isik.edu.tr" style="color:var(--accent)">isiktovillages@isik.edu.tr</a></li>
+            <li>Location: FMV Işık University, Şile Campus, Istanbul, Turkey</li>
+            <li>Instagram: <a href="https://www.instagram.com/group4helpschools" target="_blank" rel="noopener" style="color:var(--accent)">@group4helpschools</a></li>
+          </ul>
+          <p>We aim to respond to all inquiries within 5 business days.</p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+            IŞIK TO <span>VILLAGES</span>
+          </a>
+          <p>A student club at FMV Işık University dedicated to bridging campus energy with rural education across Turkey.</p>
+          <div class="social-links">
+            <a class="social-link" href="https://www.instagram.com/group4helpschools" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a class="social-link" href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a class="social-link" href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+            <li><a href="index.html#projects"><i class="fas fa-chevron-right"></i> Projects</a></li>
+            <li><a href="index.html#get-involved"><i class="fas fa-chevron-right"></i> Get Involved</a></li>
+            <li><a href="index.html#donate"><i class="fas fa-chevron-right"></i> Donate</a></li>
+            <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms of Use</a></li>
+            <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+            <li><a href="index.html#suggestions"><i class="fas fa-chevron-right"></i> Suggestions</a></li>
+            <li><a href="mailto:isiktovillages@isik.edu.tr"><i class="fas fa-envelope"></i> Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 <a href="index.html">Işık to Villages</a>. All rights reserved.</p>
+        <a href="https://www.instagram.com/project__404" target="_blank" rel="noopener noreferrer" class="footer-handle">@project__404</a>
+        <div class="footer-badge"><i class="fas fa-heart"></i> Made with purpose by Işık University students</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    const backTop = document.getElementById('back-top');
+    window.addEventListener('scroll', () => {
+      backTop.classList.toggle('visible', window.scrollY > 60);
+    }, { passive: true });
+
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  </script>
+
+</body>
+</html>

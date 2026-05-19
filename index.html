@@ -1,0 +1,2664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Işık to Villages</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ─────────────────────────────────────────
+       DESIGN TOKENS
+    ───────────────────────────────────────── */
+    :root {
+      --bg-deep:       #1A0F26;
+      --bg-plum:       #2A1B38;
+      --bg-card:       #33204A;
+      --bg-card-hover: #3D2757;
+      --accent:        #00E5FF;
+      --accent-dim:    #00B8CC;
+      --accent-glow:   rgba(0, 229, 255, 0.18);
+      --accent-glow2:  rgba(0, 229, 255, 0.08);
+      --text-white:    #FFFFFF;
+      --text-cream:    #F5F5DC;
+      --text-muted:    #B0A0C8;
+      --border:        rgba(0, 229, 255, 0.15);
+      --border-strong: rgba(0, 229, 255, 0.35);
+      --font-main:     'Inter', sans-serif;
+      --font-display:  'Poppins', sans-serif;
+      --radius-sm:     8px;
+      --radius-md:     16px;
+      --radius-lg:     24px;
+      --transition:    0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-card:   0 8px 32px rgba(0, 0, 0, 0.4);
+      --shadow-glow:   0 0 40px rgba(0, 229, 255, 0.12);
+    }
+
+    /* ─────────────────────────────────────────
+       RESET & BASE
+    ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-deep);
+      color: var(--text-cream);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5 {
+      font-family: var(--font-display);
+      color: var(--text-white);
+      line-height: 1.2;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    img { display: block; max-width: 100%; }
+
+    section { padding: 100px 0; }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ─────────────────────────────────────────
+       SCROLLBAR
+    ───────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-dim); border-radius: 3px; }
+
+    /* ─────────────────────────────────────────
+       UTILITY CLASSES
+    ───────────────────────────────────────── */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .section-title span { color: var(--accent); }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.8;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: var(--transition);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-solid {
+      background: var(--accent);
+      color: var(--bg-deep);
+      border-color: var(--accent);
+    }
+    .btn-solid:hover {
+      background: transparent;
+      color: var(--accent);
+      box-shadow: 0 0 24px var(--accent-glow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .btn-outline:hover {
+      background: var(--accent);
+      color: var(--bg-deep);
+      box-shadow: 0 0 24px var(--accent-glow);
+    }
+
+    /* Divider line */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+      margin: 0;
+    }
+
+    /* ─────────────────────────────────────────
+       BACKGROUND NOISE OVERLAY (texture)
+    ───────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ─────────────────────────────────────────
+       NAVBAR
+    ───────────────────────────────────────── */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 0 5%;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition);
+      background: transparent;
+    }
+
+    #navbar.scrolled {
+      background: rgba(26, 15, 38, 0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+      color: var(--text-white);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg-deep);
+      font-size: 1rem;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      transition: color var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width var(--transition);
+      border-radius: 2px;
+    }
+    .nav-links a:hover { color: var(--text-white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.active { color: var(--text-white); }
+    .nav-links a.active::after { width: 100%; }
+
+    .nav-cta {
+      padding: 10px 22px;
+      font-size: 0.85rem;
+    }
+
+    /* Mobile menu */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text-cream);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: 72px;
+      left: 0;
+      right: 0;
+      background: rgba(26, 15, 38, 0.97);
+      backdrop-filter: blur(20px);
+      padding: 24px 5% 32px;
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      gap: 20px;
+      z-index: 999;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text-cream);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-mobile .btn { margin-top: 8px; width: fit-content; }
+
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.22;
+      animation: orbFloat 8s ease-in-out infinite;
+    }
+    .hero-orb-1 {
+      width: 560px;
+      height: 560px;
+      background: var(--accent);
+      top: -120px;
+      right: -80px;
+      animation-delay: 0s;
+    }
+    .hero-orb-2 {
+      width: 400px;
+      height: 400px;
+      background: #7B2FBE;
+      bottom: -60px;
+      left: -80px;
+      animation-delay: -4s;
+    }
+    .hero-orb-3 {
+      width: 260px;
+      height: 260px;
+      background: var(--accent);
+      bottom: 20%;
+      right: 30%;
+      opacity: 0.1;
+      animation-delay: -2s;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(20px, -30px) scale(1.05); }
+      66%       { transform: translate(-20px, 20px) scale(0.97); }
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      padding: 120px 0 80px;
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-glow2);
+      border: 1px solid var(--border-strong);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+    .hero-badge .dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .hero-h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      color: var(--text-white);
+    }
+    .hero-h1 .highlight {
+      color: var(--accent);
+      position: relative;
+      display: inline-block;
+    }
+    .hero-h1 .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+      opacity: 0.4;
+      border-radius: 2px;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 56px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: rgba(51, 32, 74, 0.5);
+      backdrop-filter: blur(10px);
+    }
+    .stat-item {
+      flex: 1;
+      padding: 20px 24px;
+      text-align: center;
+      position: relative;
+    }
+    .stat-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: var(--border);
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Hero image side */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-img-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+    }
+    .hero-img-wrap img {
+      width: 100%;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+    }
+
+    .hero-float-card {
+      position: absolute;
+      background: rgba(51, 32, 74, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-card);
+    }
+    .hero-float-card .icon-wrap {
+      width: 38px;
+      height: 38px;
+      background: var(--accent-glow);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .hero-float-card .card-text { line-height: 1.3; }
+    .hero-float-card .card-text strong {
+      display: block;
+      font-size: 0.88rem;
+      color: var(--text-white);
+      font-weight: 700;
+    }
+    .hero-float-card .card-text span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .float-card-1 {
+      bottom: -20px;
+      left: -24px;
+      animation: floatY 4s ease-in-out infinite;
+    }
+    .float-card-2 {
+      top: -20px;
+      right: -24px;
+      animation: floatY 4s ease-in-out infinite;
+      animation-delay: -2s;
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    /* ─────────────────────────────────────────
+       MARQUEE STRIP
+    ───────────────────────────────────────── */
+    .marquee-section {
+      padding: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      background: rgba(51, 32, 74, 0.3);
+    }
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      animation: marquee 28s linear infinite;
+      width: max-content;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 40px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .marquee-item i { color: var(--accent); font-size: 0.9rem; }
+    .marquee-dot {
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.4;
+    }
+
+    /* ─────────────────────────────────────────
+       PROJECTS SECTION
+    ───────────────────────────────────────── */
+    #projects { background: var(--bg-plum); }
+
+    .projects-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 64px;
+    }
+    .projects-header .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    /* Flagship card */
+    .flagship-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: var(--shadow-card);
+      margin-bottom: 32px;
+    }
+    .flagship-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+      transform: translateY(-4px);
+    }
+
+    .flagship-inner {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+    }
+
+    .flagship-img {
+      position: relative;
+      overflow: hidden;
+    }
+    .flagship-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 360px;
+      transition: transform 0.6s ease;
+    }
+    .flagship-card:hover .flagship-img img { transform: scale(1.04); }
+    .flagship-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(42,27,56,0.6) 0%, transparent 60%);
+    }
+    .flagship-img-tag {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: var(--accent);
+      color: var(--bg-deep);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+    }
+
+    .flagship-body {
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .flagship-body h3 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .flagship-body h3 span { color: var(--accent); }
+    .flagship-body p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    .target-regions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .region-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-glow2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .supply-checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: var(--text-cream);
+    }
+    .check-item .check-icon {
+      width: 30px;
+      height: 30px;
+      background: var(--accent-glow);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    /* Mini project cards */
+    .mini-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .mini-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      transition: var(--transition);
+      cursor: default;
+    }
+    .mini-card:hover {
+      border-color: var(--border-strong);
+      background: var(--bg-card-hover);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-card);
+    }
+    .mini-card-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--accent-glow);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+    }
+    .mini-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .mini-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ─────────────────────────────────────────
+       GET INVOLVED / REGISTER SECTION
+    ───────────────────────────────────────── */
+    #get-involved { background: var(--bg-deep); }
+
+    .involve-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    /* Info column */
+    .involve-info h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .involve-info h2 span { color: var(--accent); }
+    .involve-info > p {
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      line-height: 1.8;
+    }
+
+    .dropoff-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .dropoff-card h4 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .dropoff-card h4 i { color: var(--accent); }
+
+    .dropoff-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .dropoff-detail:last-child { margin-bottom: 0; }
+    .dropoff-detail i {
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-top: 3px;
+      flex-shrink: 0;
+      width: 16px;
+    }
+    .dropoff-detail span {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .dropoff-detail strong { color: var(--text-cream); }
+
+    .items-needed {
+      background: var(--accent-glow2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+    }
+    .items-needed h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .items-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .item-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-cream);
+    }
+    .item-tag i {
+      color: var(--accent);
+      font-size: 0.75rem;
+    }
+
+    /* Form column */
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .form-card-header {
+      margin-bottom: 32px;
+    }
+    .form-card-header h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .form-card-header p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-cream);
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+    .form-group label span { color: var(--accent); }
+
+    .form-control {
+      width: 100%;
+      background: rgba(26, 15, 38, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 13px 16px;
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      color: var(--text-cream);
+      transition: var(--transition);
+      outline: none;
+      appearance: none;
+    }
+    .form-control::placeholder { color: rgba(176, 160, 200, 0.45); }
+    .form-control:focus {
+      border-color: var(--accent);
+      background: rgba(0, 229, 255, 0.04);
+      box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
+    }
+    /* Custom dropdown */
+    .custom-select-wrapper {
+      position: relative;
+      user-select: none;
+    }
+    .custom-select-trigger {
+      width: 100%;
+      background: rgba(26, 15, 38, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 13px 40px 13px 16px;
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      color: rgba(176, 160, 200, 0.45);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition);
+    }
+    .custom-select-trigger.selected { color: var(--text-cream); }
+    .custom-select-trigger:focus,
+    .custom-select-wrapper.open .custom-select-trigger {
+      border-color: var(--accent);
+      background: rgba(0, 229, 255, 0.04);
+      box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
+      outline: none;
+    }
+    .custom-select-trigger .arrow {
+      width: 12px;
+      height: 8px;
+      flex-shrink: 0;
+      transition: transform var(--transition);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300E5FF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .custom-select-wrapper.open .custom-select-trigger .arrow {
+      transform: rotate(180deg);
+    }
+    .custom-options {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: #1A0F26;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      z-index: 200;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .custom-select-wrapper.open .custom-options { display: block; }
+    .custom-option {
+      padding: 11px 16px;
+      font-size: 0.9rem;
+      color: var(--text-cream);
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+    }
+    .custom-option:hover { background: rgba(0,229,255,0.1); color: var(--accent); }
+    .custom-option.active { background: rgba(0,229,255,0.15); color: var(--accent); font-weight: 600; }
+    /* Hidden real select for form submission */
+    select.form-control-hidden {
+      display: none;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      justify-content: center;
+      padding: 16px;
+      font-size: 0.95rem;
+      border-radius: var(--radius-sm);
+      background: var(--accent);
+      color: var(--bg-deep);
+      border: 2px solid var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      font-family: var(--font-display);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-submit::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.12);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .btn-submit:hover {
+      background: transparent;
+      color: var(--accent);
+      box-shadow: 0 0 32px rgba(0, 229, 255, 0.3);
+    }
+    .btn-submit:hover::after { opacity: 0; }
+    .btn-submit:active { transform: scale(0.98); }
+
+    .form-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .form-note i { color: var(--accent); }
+
+    /* ─────────────────────────────────────────
+       DONATE SECTION
+    ───────────────────────────────────────── */
+    #donate { background: var(--bg-plum); }
+
+    .donate-header { text-align: center; margin-bottom: 64px; }
+    .donate-header .section-sub { margin: 0 auto; }
+
+    /* Progress bar */
+    .funding-progress {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px 32px;
+      margin-bottom: 56px;
+    }
+    .fp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .fp-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-cream);
+    }
+    .fp-pct {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .fp-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: rgba(0,229,255,0.1);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .fp-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+      border-radius: 100px;
+      transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 0 12px rgba(0,229,255,0.5);
+    }
+    .fp-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Tier cards */
+    .tier-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .tier-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .tier-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .tier-card:hover,
+    .tier-card.active {
+      border-color: var(--accent);
+      background: var(--bg-card-hover);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+    }
+    .tier-card:hover::before,
+    .tier-card.active::before { opacity: 1; }
+
+    .tier-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(160deg, var(--bg-card-hover), rgba(0,229,255,0.05));
+    }
+    .tier-card.featured::before { opacity: 1; }
+
+    .tier-featured-badge {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: var(--bg-deep);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .tier-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--accent-glow);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1.4rem;
+      margin: 0 auto 20px;
+      transition: var(--transition);
+    }
+    .tier-card:hover .tier-icon,
+    .tier-card.active .tier-icon {
+      background: var(--accent);
+      color: var(--bg-deep);
+      border-color: var(--accent);
+    }
+
+    .tier-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .tier-price {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--text-white);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .tier-price sup {
+      font-size: 1rem;
+      font-weight: 600;
+      vertical-align: top;
+      margin-top: 6px;
+    }
+    .tier-currency {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .tier-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+    .tier-perks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+      text-align: left;
+    }
+    .tier-perks li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .tier-perks li i {
+      color: var(--accent);
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+    .tier-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: var(--font-display);
+      transition: var(--transition);
+    }
+
+    /* ─────────────────────────────────────────
+       SUGGESTIONS
+    ───────────────────────────────────────── */
+    #suggestions {
+      background: var(--bg-plum);
+    }
+
+    .suggestions-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .suggestions-left .section-sub {
+      margin-bottom: 32px;
+    }
+
+    .suggestions-perks {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .suggestions-perk {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .suggestions-perk .perk-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-glow2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .suggestions-perk .perk-text strong {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-cream);
+      margin-bottom: 2px;
+    }
+
+    .suggestions-perk .perk-text span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .suggestions-form-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+    }
+
+    .suggestions-form .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .suggestions-form .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .suggestions-form label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-cream);
+      letter-spacing: 0.03em;
+    }
+
+    .suggestions-form input,
+    .suggestions-form select,
+    .suggestions-form textarea {
+      background: var(--bg-plum);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      color: var(--text-cream);
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+      width: 100%;
+    }
+
+    .suggestions-form input::placeholder,
+    .suggestions-form textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .suggestions-form input:focus,
+    .suggestions-form select:focus,
+    .suggestions-form textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow2);
+    }
+
+    .suggestions-form select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300E5FF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+
+    .suggestions-form select option {
+      background: var(--bg-card);
+      color: var(--text-cream);
+    }
+
+    .suggestions-form textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .required-star { color: var(--accent); }
+
+    .suggestions-form.done { display: none; }
+
+    .suggestion-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 32px;
+      text-align: center;
+    }
+    .suggestion-success.show { display: flex; }
+
+    .suggestion-success .success-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--accent-glow);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      color: var(--accent);
+    }
+
+    .suggestion-success h4 {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .suggestion-success p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ─────────────────────────────────────────
+       FAQ
+    ───────────────────────────────────────── */
+    #faq { background: var(--bg-deep); }
+
+    .faq-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .faq-left { position: sticky; top: 96px; }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: border-color var(--transition);
+    }
+    .faq-item.open { border-color: var(--border-strong); }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-cream);
+      transition: color var(--transition);
+    }
+    .faq-question:hover { color: var(--text-white); }
+    .faq-item.open .faq-question { color: var(--accent); }
+
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent-glow2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 0.7rem;
+      flex-shrink: 0;
+      transition: transform var(--transition), background var(--transition);
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: var(--accent-glow);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 24px;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 400px;
+      padding: 0 24px 20px;
+    }
+    .faq-answer p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+    .faq-answer a { color: var(--accent); }
+    .faq-answer a:hover { text-decoration: underline; }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    footer {
+      background: var(--bg-deep);
+      border-top: 1px solid var(--border);
+      padding: 48px 0 32px;
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin: 14px 0 20px;
+      max-width: 280px;
+    }
+    .social-links {
+      display: flex;
+      gap: 12px;
+    }
+    .social-link {
+      width: 38px;
+      height: 38px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .social-link:hover {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .footer-col h5 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-cream);
+      margin-bottom: 18px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
+    .footer-col ul li a {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      transition: color var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .footer-col ul li a:hover { color: var(--accent); }
+    .footer-col ul li a i { font-size: 0.7rem; }
+
+    .footer-bottom {
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-copy {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .footer-copy a { color: var(--accent); }
+    .footer-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .footer-badge i { color: var(--accent); }
+    .footer-handle { font-size: 0.82rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; opacity: 0.75; transition: opacity var(--transition); }
+    .footer-handle:hover { opacity: 1; }
+
+    /* ─────────────────────────────────────────
+       BACK TO TOP
+    ───────────────────────────────────────── */
+    #back-top {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      color: var(--bg-deep);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: var(--transition);
+      z-index: 900;
+      box-shadow: 0 4px 20px rgba(0,229,255,0.3);
+    }
+    #back-top.visible { opacity: 1; transform: translateY(0); }
+    #back-top:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,229,255,0.4); }
+
+    /* ─────────────────────────────────────────
+       ANIMATIONS ON SCROLL
+    ───────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { display: none; }
+      .flagship-inner { grid-template-columns: 1fr; }
+      .flagship-img img { min-height: 260px; }
+      .projects-header { grid-template-columns: 1fr; }
+      .projects-header .header-right { align-items: flex-start; }
+      .involve-grid { grid-template-columns: 1fr; }
+      .suggestions-inner { grid-template-columns: 1fr; gap: 40px; }
+      .faq-inner { grid-template-columns: 1fr; gap: 40px; }
+      .faq-left { position: static; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      section { padding: 72px 0; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .mini-cards { grid-template-columns: 1fr; }
+      .tier-cards { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .suggestions-form .form-row-2 { grid-template-columns: 1fr; }
+      .suggestions-form-wrap { padding: 28px 20px; }
+      .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+      .float-card-1, .float-card-2 { display: none; }
+      .hero-stats { flex-direction: column; }
+      .stat-item:not(:last-child)::after { display: none; }
+      .stat-item { border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+      .form-card { padding: 28px 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ════════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════════ -->
+  <nav id="navbar">
+    <a href="#home" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+      IŞIK TO <span>VILLAGES</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#get-involved">Get Involved</a></li>
+      <li><a href="#donate">Donate</a></li>
+      <li><a href="drive.html">Drive</a></li>
+      <li><a href="blog.html">Blog</a></li>
+    </ul>
+
+    <a href="#get-involved" class="btn btn-solid nav-cta">
+      <i class="fas fa-user-plus"></i> Join Club
+    </a>
+
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="nav-mobile" id="mobile-menu">
+    <a href="#home" onclick="closeMobile()">Home</a>
+    <a href="#projects" onclick="closeMobile()">Projects</a>
+    <a href="#get-involved" onclick="closeMobile()">Get Involved</a>
+    <a href="#donate" onclick="closeMobile()">Donate</a>
+    <a href="drive.html" onclick="closeMobile()">Drive</a>
+    <a href="blog.html" onclick="closeMobile()">Blog</a>
+    <a href="#get-involved" class="btn btn-solid" onclick="closeMobile()">
+      <i class="fas fa-user-plus"></i> Join Club
+    </a>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════════ -->
+  <section id="home">
+    <div class="hero-bg">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
+    </div>
+
+    <div class="hero-inner">
+      <!-- Text -->
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          FMV Işık University &nbsp;·&nbsp; Est. 2026
+        </div>
+
+        <h1 class="hero-h1">
+          Bridging Campus Energy<br />
+          with <span class="highlight">Village Education.</span>
+        </h1>
+
+        <p class="hero-sub">
+          A student-led initiative empowering under-resourced schools across Turkey — one book, one mentor, one community at a time.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-outline">
+            <i class="fas fa-compass"></i> Explore Projects
+          </a>
+          <a href="#donate" class="btn btn-solid">
+            <i class="fas fa-hand-holding-heart"></i> Drop Off Donations
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-num">2026</span>
+            <span class="stat-label">Founded</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">01</span>
+            <span class="stat-label">Core Mission</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Student Driven</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual -->
+      <div class="hero-visual">
+        <div class="hero-img-wrap">
+          <img
+            src="https://placehold.co/520x420/2A1B38/00E5FF?text=Students+Working+Together"
+            alt="Students working together"
+          />
+
+          <div class="hero-float-card float-card-1">
+            <div class="icon-wrap"><i class="fas fa-book"></i></div>
+            <div class="card-text">
+              <strong>1 Book, 1 Future</strong>
+              <span>Flagship Initiative</span>
+            </div>
+          </div>
+
+          <div class="hero-float-card float-card-2">
+            <div class="icon-wrap"><i class="fas fa-location-dot"></i></div>
+            <div class="card-text">
+              <strong>Ordu &amp; Aydın</strong>
+              <span>Target Regions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       MARQUEE
+  ═══════════════════════════════════════════ -->
+  <div class="marquee-section">
+    <div class="marquee-track" id="marquee">
+      <div class="marquee-item"><i class="fas fa-book-open"></i> Books &amp; Storybooks</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-pencil"></i> Stationery Packs</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-chess"></i> Board Games</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-graduation-cap"></i> Mentorship</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-hands-helping"></i> Community Impact</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-school"></i> Regional Schools</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-map-location-dot"></i> Ordu &amp; Aydın</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-users"></i> 100% Student Driven</div>
+      <div class="marquee-dot"></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="marquee-item"><i class="fas fa-book-open"></i> Books &amp; Storybooks</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-pencil"></i> Stationery Packs</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-chess"></i> Board Games</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-graduation-cap"></i> Mentorship</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-hands-helping"></i> Community Impact</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-school"></i> Regional Schools</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-map-location-dot"></i> Ordu &amp; Aydın</div>
+      <div class="marquee-dot"></div>
+      <div class="marquee-item"><i class="fas fa-users"></i> 100% Student Driven</div>
+      <div class="marquee-dot"></div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       PROJECTS
+  ═══════════════════════════════════════════ -->
+  <section id="projects">
+    <div class="container">
+
+      <div class="projects-header">
+        <div>
+          <div class="section-label">Our Work</div>
+          <h2 class="section-title">Making an <span>Impact</span><br />Where It Counts</h2>
+          <p class="section-sub">We focus on tangible, measurable change — delivering resources to the schools that need them most.</p>
+        </div>
+        <div class="header-right">
+          <a href="#donate" class="btn btn-outline">
+            <i class="fas fa-arrow-up-right-from-square"></i> Support a Drive
+          </a>
+        </div>
+      </div>
+
+      <!-- Flagship -->
+      <div class="flagship-card reveal">
+        <div class="flagship-inner">
+          <div class="flagship-img">
+            <img
+              src="https://placehold.co/640x420/1A0F26/00E5FF?text=1+Book+%2C+1+Future"
+              alt="1 Book 1 Future initiative"
+            />
+            <div class="flagship-img-overlay"></div>
+            <div class="flagship-img-tag">Flagship Initiative</div>
+          </div>
+
+          <div class="flagship-body">
+            <div class="section-label">Active Drive — 2026</div>
+            <h3><span>"1 Book,</span> 1 Future"</h3>
+            <p>Collecting, curating, and delivering age-appropriate books, stationery, and educational games to primary schools in under-resourced regions of Turkey.</p>
+
+            <div class="target-regions">
+              <span class="region-chip">
+                <i class="fas fa-location-dot"></i> Ordu Province
+              </span>
+              <span class="region-chip">
+                <i class="fas fa-location-dot"></i> Aydın Province
+              </span>
+            </div>
+
+            <div class="supply-checklist">
+              <div class="check-item">
+                <div class="check-icon"><i class="fas fa-book"></i></div>
+                Storybooks &amp; Reading Sets
+              </div>
+              <div class="check-item">
+                <div class="check-icon"><i class="fas fa-pencil-ruler"></i></div>
+                Stationery Packs (notebooks, pens, pencils)
+              </div>
+              <div class="check-item">
+                <div class="check-icon"><i class="fas fa-chess-board"></i></div>
+                Educational Board Games
+              </div>
+              <div class="check-item">
+                <div class="check-icon"><i class="fas fa-chalkboard-user"></i></div>
+                Mentorship &amp; Online Sessions
+              </div>
+            </div>
+
+            <a href="#get-involved" class="btn btn-solid" style="width: fit-content;">
+              <i class="fas fa-box-open"></i> Contribute Supplies
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini cards -->
+      <div class="mini-cards">
+        <div class="mini-card reveal reveal-delay-1">
+          <div class="mini-card-icon"><i class="fas fa-map-location-dot"></i></div>
+          <h4>Regional Outreach</h4>
+          <p>Partnering with local school administrators and NGOs in Ordu and Aydın to identify the highest-need classrooms.</p>
+        </div>
+        <div class="mini-card reveal reveal-delay-2">
+          <div class="mini-card-icon"><i class="fas fa-graduation-cap"></i></div>
+          <h4>Mentorship Program</h4>
+          <p>Işık University students hold live online sessions, tutoring village students in core subjects and career guidance.</p>
+        </div>
+        <div class="mini-card reveal reveal-delay-3">
+          <div class="mini-card-icon"><i class="fas fa-box-archive"></i></div>
+          <h4>Campus Drop-Offs</h4>
+          <p>A permanent donation point on the Şile campus lets every student contribute physical items with zero friction.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       GET INVOLVED
+  ═══════════════════════════════════════════ -->
+  <section id="get-involved">
+    <div class="container">
+
+      <div style="margin-bottom: 56px;">
+        <div class="section-label">Get Involved</div>
+        <h2 class="section-title" style="margin-bottom:0;">Two Ways to <span>Make a Difference</span></h2>
+      </div>
+
+      <div class="involve-grid">
+
+        <!-- Info column -->
+        <div class="involve-info reveal">
+          <h2>Drop Off <span>Donations</span><br />On Campus</h2>
+          <p>Can't make a monetary donation? Physical contributions are equally impactful. Leave items at our designated campus collection point — our team sorts, boxes, and ships everything.</p>
+
+          <div class="dropoff-card">
+            <h4><i class="fas fa-location-pin"></i> Collection Point</h4>
+            <div class="dropoff-detail">
+              <i class="fas fa-building-columns"></i>
+              <span><strong>FMV Işık University — Şile Campus</strong></span>
+            </div>
+            <div class="dropoff-detail">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Student Union Building, Ground Floor — Room SU-01</span>
+            </div>
+            <div class="dropoff-detail">
+              <i class="fas fa-clock"></i>
+              <span><strong>Mon – Fri:</strong> 09:00 – 18:00 &nbsp;|&nbsp; <strong>Sat:</strong> 10:00 – 14:00</span>
+            </div>
+            <div class="dropoff-detail">
+              <i class="fas fa-envelope"></i>
+              <span>isiktovillages@isik.edu.tr</span>
+            </div>
+          </div>
+
+          <div class="items-needed">
+            <h4><i class="fas fa-list-check" style="margin-right:6px;"></i> Most Needed Right Now</h4>
+            <div class="items-grid">
+              <div class="item-tag"><i class="fas fa-chevron-right"></i> Story books</div>
+              <div class="item-tag"><i class="fas fa-chevron-right"></i> Notebooks</div>
+              <div class="item-tag"><i class="fas fa-chevron-right"></i> Colored pencils</div>
+              <div class="item-tag"><i class="fas fa-chevron-right"></i> Board games</div>
+              <div class="item-tag"><i class="fas fa-chevron-right"></i> Geometry sets</div>
+              <div class="item-tag"><i class="fas fa-chevron-right"></i> Dictionaries</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form column -->
+        <div class="form-card reveal reveal-delay-2">
+          <div class="form-card-header">
+            <div class="section-label">Membership</div>
+            <h3>Register as a <span style="color:var(--accent)">Club Member</span></h3>
+            <p>Open to all Işık University students. No experience required — just the will to help.</p>
+          </div>
+
+          <!--
+            DATABASE INTEGRATION TO BE ADDED NEXT WEEK.
+            Replace action="#" with the backend endpoint / Supabase function URL.
+            Add CSRF token, validation, and success/error state handling.
+          -->
+          <form action="#" method="POST" id="register-form" novalidate>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fullname">Full Name <span>*</span></label>
+                <input
+                  type="text"
+                  id="fullname"
+                  name="fullname"
+                  class="form-control"
+                  placeholder="e.g. Ayşe Kaya"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="student-id">Student ID <span>*</span></label>
+                <input
+                  type="text"
+                  id="student-id"
+                  name="student_id"
+                  class="form-control"
+                  placeholder="e.g. 2024XXXXXX"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">University Email <span>*</span></label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                placeholder="yourname@isik.edu.tr"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Major / Department <span>*</span></label>
+              <!-- Hidden real input for form submission -->
+              <input type="hidden" id="department" name="department" required />
+              <div class="custom-select-wrapper" id="dept-wrapper">
+                <div class="custom-select-trigger" tabindex="0" id="dept-trigger">
+                  <span id="dept-label">Select your department</span>
+                  <span class="arrow"></span>
+                </div>
+                <div class="custom-options">
+                  <div class="custom-option" data-value="engineering">Engineering</div>
+                  <div class="custom-option" data-value="architecture">Architecture</div>
+                  <div class="custom-option" data-value="education">Education</div>
+                  <div class="custom-option" data-value="economics">Economics &amp; Admin Sciences</div>
+                  <div class="custom-option" data-value="arts">Fine Arts &amp; Design</div>
+                  <div class="custom-option" data-value="science">Science &amp; Literature</div>
+                  <div class="custom-option" data-value="communication">Communication</div>
+                  <div class="custom-option" data-value="other">Other</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="motivation">Why do you want to join? <span style="color:var(--text-muted); font-weight:400;">(optional)</span></label>
+              <textarea
+                id="motivation"
+                name="motivation"
+                class="form-control"
+                rows="3"
+                placeholder="Share what motivates you to get involved..."
+                style="resize: vertical; min-height: 80px;"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">
+              <i class="fas fa-user-check" style="margin-right:8px;"></i>
+              Register as Member
+            </button>
+
+          </form>
+
+          <p class="form-note">
+            <i class="fas fa-shield-halved"></i>
+            Your data is only used for club membership purposes.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       DONATE
+  ═══════════════════════════════════════════ -->
+  <section id="donate">
+    <div class="container">
+
+      <div class="donate-header reveal">
+        <div class="section-label" style="margin: 0 auto 16px; display:flex; justify-content:center;">Support Us</div>
+        <h2 class="section-title" style="font-size: clamp(2rem, 4.5vw, 3.2rem);">
+          Small Contributions.<br /><span>Lasting Impact.</span>
+        </h2>
+        <p class="section-sub" style="margin: 16px auto 0;">
+          Every lira goes directly to school supplies and logistics. No overhead, no bureaucracy — just resources reaching children who need them.
+        </p>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="funding-progress reveal">
+        <div class="fp-header">
+          <div class="fp-title">
+            <i class="fas fa-flag" style="color:var(--accent); margin-right:8px;"></i>
+            Funding the Ordu &amp; Aydın School Drives
+          </div>
+          <div class="fp-pct" id="fp-pct">0%</div>
+        </div>
+        <div class="fp-bar-bg">
+          <div class="fp-bar-fill" id="fp-bar"></div>
+        </div>
+        <div class="fp-meta">
+          <span>₺7,500 raised</span>
+          <span>Goal: ₺50,000</span>
+        </div>
+      </div>
+
+      <!-- Tier cards -->
+      <div class="tier-cards">
+
+        <div class="tier-card reveal reveal-delay-1" onclick="selectTier(this)">
+          <div class="tier-icon"><i class="fas fa-pencil"></i></div>
+          <div class="tier-name">Supporter</div>
+          <div class="tier-price"><sup>₺</sup>150</div>
+          <div class="tier-currency">One-time contribution</div>
+          <div class="tier-divider"></div>
+          <ul class="tier-perks">
+            <li><i class="fas fa-check"></i> 1 complete stationery pack</li>
+            <li><i class="fas fa-check"></i> Supplies 1 student for a term</li>
+            <li><i class="fas fa-check"></i> Digital thank-you certificate</li>
+            <li><i class="fas fa-check"></i> Impact update email</li>
+          </ul>
+          <button class="tier-btn btn btn-outline" style="width:100%; justify-content:center;">Choose Plan</button>
+        </div>
+
+        <div class="tier-card featured reveal reveal-delay-2" onclick="selectTier(this)">
+          <div class="tier-featured-badge">Most Popular</div>
+          <div class="tier-icon"><i class="fas fa-book-open"></i></div>
+          <div class="tier-name">Contributor</div>
+          <div class="tier-price"><sup>₺</sup>400</div>
+          <div class="tier-currency">One-time contribution</div>
+          <div class="tier-divider"></div>
+          <ul class="tier-perks">
+            <li><i class="fas fa-check"></i> Library Starter Kit (5 books)</li>
+            <li><i class="fas fa-check"></i> Stationery + board game</li>
+            <li><i class="fas fa-check"></i> Name on donor wall</li>
+            <li><i class="fas fa-check"></i> Photo update from the school</li>
+          </ul>
+          <button class="tier-btn btn btn-solid" style="width:100%; justify-content:center;">Choose Plan</button>
+        </div>
+
+        <div class="tier-card reveal reveal-delay-3" onclick="selectTier(this)">
+          <div class="tier-icon"><i class="fas fa-school"></i></div>
+          <div class="tier-name">Champion</div>
+          <div class="tier-price"><sup>₺</sup>1000</div>
+          <div class="tier-currency">One-time contribution</div>
+          <div class="tier-divider"></div>
+          <ul class="tier-perks">
+            <li><i class="fas fa-check"></i> Full Classroom Kit</li>
+            <li><i class="fas fa-check"></i> 20+ books + full stationery</li>
+            <li><i class="fas fa-check"></i> Dedicated classroom plaque</li>
+            <li><i class="fas fa-check"></i> Live video call with students</li>
+          </ul>
+          <button class="tier-btn btn btn-outline" style="width:100%; justify-content:center;">Choose Plan</button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       FAQ
+  ═══════════════════════════════════════════ -->
+  <section id="faq">
+    <div class="container">
+      <div class="faq-inner">
+
+        <!-- Left: header -->
+        <div class="faq-left reveal">
+          <span class="section-label"><i class="fas fa-circle-question"></i> FAQ</span>
+          <h2 class="section-title">Questions <span>Answered</span></h2>
+          <p class="section-sub">Everything donors, supporters, and potential members usually ask — answered in one place.</p>
+          <div style="margin-top:32px; display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:var(--text-muted);">
+              <i class="fas fa-envelope" style="color:var(--accent);"></i>
+              Still have questions? <a href="mailto:isiktovillages@isik.edu.tr" style="color:var(--accent); margin-left:4px;">Email us</a>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:var(--text-muted);">
+              <i class="fab fa-instagram" style="color:var(--accent);"></i>
+              <a href="https://www.instagram.com/group4helpschools" target="_blank" rel="noopener" style="color:var(--accent);">@group4helpschools</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: accordion -->
+        <div class="faq-list reveal reveal-delay-1">
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Is Işık to Villages a legitimate organization?
+              <span class="faq-icon"><i class="fas fa-plus"></i></span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes. We are a registered student club operating under FMV Işık University (Şile Campus) as of 2026. All activities are supervised by the university and conducted in accordance with student club regulations. We are not a separate NGO — we are a university-affiliated initiative, which means our operations are transparent and accountable to the institution.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Where does my donation money actually go?
+              <span class="faq-icon"><i class="fas fa-plus"></i></span>
+            </button>
+            <div class="faq-answer">
+              <p>100% of monetary donations go directly toward purchasing books, stationery, and educational materials for village schools in our target regions (Ordu and Aydın provinces). Transportation costs for deliveries are covered separately through university support. We publish an impact update after every distribution — donors who share their email receive it directly.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              How do I donate physical books or stationery?
+              <span class="faq-icon"><i class="fas fa-plus"></i></span>
+            </button>
+            <div class="faq-answer">
+              <p>Drop off your items at our collection point on <strong style="color:var(--text-cream)">FMV Işık University — Şile Campus</strong>. Look for the Işık to Villages drop-off box in the main building foyer. We accept books in good condition (no torn pages or missing covers), pencils, notebooks, rulers, and art supplies. Collection runs every weekday during term time.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Who can join the club?
+              <span class="faq-icon"><i class="fas fa-plus"></i></span>
+            </button>
+            <div class="faq-answer">
+              <p>Any currently enrolled student at FMV Işık University is welcome to apply. You don't need a specific major — we have members from engineering, business, education, and arts. Fill in the registration form in the <a href="#get-involved">Get Involved</a> section and we'll get back to you within a week. Membership is free.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Do I need to be a student to support you?
+              <span class="faq-icon"><i class="fas fa-plus"></i></span>
+            </button>
+            <div class="faq-answer">
+              <p>Not at all. Anyone can make a monetary donation or drop off supplies — you don't need to be affiliated with the university. If you're outside Istanbul and want to help, a monetary donation through our <a href="#donate">Donate</a> section is the easiest way to contribute. Every amount helps.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              How will I know my donation reached a school?
+              <span class="faq-icon"><i class="fas fa-plus"></i></span>
+            </button>
+            <div class="faq-answer">
+              <p>We document every village visit with photos and a written field report, published on our <a href="blog.html">blog</a>. Contributors at the ₺400 tier and above receive a direct photo update from the school their materials reached. We also post regular updates on Instagram at <a href="https://www.instagram.com/group4helpschools" target="_blank" rel="noopener">@group4helpschools</a>.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Which schools and regions do you work with?
+              <span class="faq-icon"><i class="fas fa-plus"></i></span>
+            </button>
+            <div class="faq-answer">
+              <p>Our current focus is on under-resourced primary schools in <strong style="color:var(--text-cream)">Ordu</strong> and <strong style="color:var(--text-cream)">Aydın</strong> provinces in Turkey. We choose schools based on need assessments done in coordination with local teachers and administrators. As the club grows, we plan to expand to additional provinces.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              How do I stay updated on your progress?
+              <span class="faq-icon"><i class="fas fa-plus"></i></span>
+            </button>
+            <div class="faq-answer">
+              <p>Follow us on Instagram at <a href="https://www.instagram.com/group4helpschools" target="_blank" rel="noopener">@group4helpschools</a> for real-time updates. For longer stories and field reports, check our <a href="blog.html">blog</a>. You can also subscribe to email updates in the blog's newsletter section — we send one email per major update, nothing more.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       SUGGESTIONS
+  ═══════════════════════════════════════════ -->
+  <section id="suggestions">
+    <div class="container">
+      <div class="suggestions-inner">
+
+        <!-- Left: Info -->
+        <div class="suggestions-left reveal">
+          <span class="section-label"><i class="fas fa-lightbulb"></i> Community Voice</span>
+          <h2 class="section-title">Share Your <span>Ideas</span></h2>
+          <p class="section-sub">Have a book recommendation, event idea, or want to give feedback? We read every suggestion and use them to grow the club.</p>
+
+          <div class="suggestions-perks">
+            <div class="suggestions-perk">
+              <div class="perk-icon"><i class="fas fa-book"></i></div>
+              <div class="perk-text">
+                <strong>Book Recommendations</strong>
+                <span>Suggest titles for our next supply run to village schools.</span>
+              </div>
+            </div>
+            <div class="suggestions-perk">
+              <div class="perk-icon"><i class="fas fa-calendar-star"></i></div>
+              <div class="perk-text">
+                <strong>Event Ideas</strong>
+                <span>Propose campus events, fundraisers, or awareness campaigns.</span>
+              </div>
+            </div>
+            <div class="suggestions-perk">
+              <div class="perk-icon"><i class="fas fa-handshake"></i></div>
+              <div class="perk-text">
+                <strong>Partnerships</strong>
+                <span>Know a business or group that could collaborate with us?</span>
+              </div>
+            </div>
+            <div class="suggestions-perk">
+              <div class="perk-icon"><i class="fas fa-comment-dots"></i></div>
+              <div class="perk-text">
+                <strong>General Feedback</strong>
+                <span>Tell us what we're doing well and what we can improve.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Form -->
+        <div class="suggestions-form-wrap reveal reveal-delay-1">
+          <form class="suggestions-form" id="suggestion-form" onsubmit="handleSuggestion(event)">
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="s-name">Your Name <span class="required-star">*</span></label>
+                <input type="text" id="s-name" placeholder="Full name" required />
+              </div>
+              <div class="form-group">
+                <label for="s-email">Email Address</label>
+                <input type="email" id="s-email" placeholder="your@email.com" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="s-category">Category <span class="required-star">*</span></label>
+              <select id="s-category" required>
+                <option value="" disabled selected>Select a category</option>
+                <option value="books">Book Recommendations</option>
+                <option value="events">Event Ideas</option>
+                <option value="partnerships">Partnerships</option>
+                <option value="feedback">General Feedback</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="s-message">Your Message <span class="required-star">*</span></label>
+              <textarea id="s-message" placeholder="Share your idea or feedback here…" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-solid" style="width:100%; justify-content:center;">
+              <i class="fas fa-paper-plane"></i> Submit Suggestion
+            </button>
+          </form>
+
+          <div class="suggestion-success" id="suggestion-success">
+            <div class="success-icon"><i class="fas fa-check"></i></div>
+            <h4>Thank You!</h4>
+            <p>Your suggestion has been received. We review every submission and use them to improve what we do.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner" style="grid-template-columns: 1.4fr 1fr 1fr 1fr;">
+
+        <div class="footer-brand">
+          <a href="#home" class="nav-logo">
+            <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+            IŞIK TO <span>VILLAGES</span>
+          </a>
+          <p>A student club at FMV Işık University dedicated to bridging campus energy with rural education across Turkey.</p>
+          <div class="social-links">
+            <a class="social-link" href="https://www.instagram.com/group4helpschools" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a class="social-link" href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a class="social-link" href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+            <li><a href="#projects"><i class="fas fa-chevron-right"></i> Projects</a></li>
+            <li><a href="#get-involved"><i class="fas fa-chevron-right"></i> Get Involved</a></li>
+            <li><a href="#donate"><i class="fas fa-chevron-right"></i> Donate</a></li>
+            <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Blog</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Contact</h5>
+          <ul>
+            <li>
+              <a href="mailto:isiktovillages@isik.edu.tr">
+                <i class="fas fa-envelope"></i> isiktovillages@isik.edu.tr
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fas fa-building-columns"></i> FMV Işık University, Şile
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fas fa-location-dot"></i> Istanbul, Turkey
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms of Use</a></li>
+            <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+            <li><a href="#suggestions"><i class="fas fa-chevron-right"></i> Suggestions</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          © 2026 <a href="#home">Işık to Villages</a>. All rights reserved.
+        </p>
+        <a href="https://www.instagram.com/project__404" target="_blank" rel="noopener noreferrer" class="footer-handle">@project__404</a>
+        <div class="footer-badge">
+          <i class="fas fa-heart"></i>
+          Made with purpose by Işık University students
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+
+  <!-- ════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════ -->
+  <script>
+    /* ── Navbar scroll state + active link highlight ── */
+    const navbar = document.getElementById('navbar');
+    const backTop = document.getElementById('back-top');
+    const sections = document.querySelectorAll('section[id]');
+    const navAs = document.querySelectorAll('.nav-links a');
+
+    // Pre-compute offsets once — they don't change on this static page
+    let sectionOffsets = Array.from(sections).map(s => ({ id: s.id, top: s.offsetTop }));
+    window.addEventListener('resize', () => {
+      sectionOffsets = Array.from(sections).map(s => ({ id: s.id, top: s.offsetTop }));
+    }, { passive: true });
+
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY > 60;
+      navbar.classList.toggle('scrolled', scrolled);
+      backTop.classList.toggle('visible', scrolled);
+
+      let current = '';
+      for (const sec of sectionOffsets) {
+        if (window.scrollY >= sec.top - 120) current = sec.id;
+      }
+      navAs.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    }, { passive: true });
+
+    /* ── Mobile hamburger ── */
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* ── Scroll-reveal (IntersectionObserver) ── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    /* ── Funding progress bar (animate when in view) ── */
+    const fpBar  = document.getElementById('fp-bar');
+    const fpPct  = document.getElementById('fp-pct');
+    const TARGET = 15;
+    let animated = false;
+
+    const fpObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !animated) {
+        animated = true;
+        fpBar.style.width = TARGET + '%';
+
+        let current = 0;
+        const interval = setInterval(() => {
+          current++;
+          fpPct.textContent = current + '%';
+          if (current >= TARGET) clearInterval(interval);
+        }, 1400 / TARGET);
+      }
+    }, { threshold: 0.5 });
+
+    fpObserver.observe(document.querySelector('.funding-progress'));
+
+    /* ── Custom department dropdown ── */
+    const deptWrapper = document.getElementById('dept-wrapper');
+    const deptTrigger = document.getElementById('dept-trigger');
+    const deptLabel   = document.getElementById('dept-label');
+    const deptInput   = document.getElementById('department');
+
+    deptTrigger.addEventListener('click', () => {
+      deptWrapper.classList.toggle('open');
+    });
+    deptTrigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); deptWrapper.classList.toggle('open'); }
+      if (e.key === 'Escape') deptWrapper.classList.remove('open');
+    });
+    deptWrapper.querySelectorAll('.custom-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        deptWrapper.querySelectorAll('.custom-option').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        deptLabel.textContent = opt.textContent;
+        deptInput.value = opt.dataset.value;
+        deptTrigger.classList.add('selected');
+        deptTrigger.style.borderColor = '';
+        deptWrapper.classList.remove('open');
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if (!deptWrapper.contains(e.target)) deptWrapper.classList.remove('open');
+    });
+
+    /* ── Tier card selection ── */
+    function selectTier(card) {
+      document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+    }
+
+    /* ── Registration form (UI-only, DB next week) ── */
+    const form = document.getElementById('register-form');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const required = form.querySelectorAll('[required]');
+      let valid = true;
+
+      required.forEach(field => {
+        field.style.borderColor = '';
+        if (field.id === 'department') {
+          // validate the custom dropdown trigger instead
+          if (!field.value.trim()) {
+            deptTrigger.style.borderColor = '#FF6B6B';
+            valid = false;
+          } else {
+            deptTrigger.style.borderColor = '';
+          }
+          return;
+        }
+        if (!field.value.trim()) {
+          field.style.borderColor = '#FF6B6B';
+          field.focus();
+          valid = false;
+        }
+      });
+
+      if (!valid) return;
+
+      /*
+       * DATABASE INTEGRATION TO BE ADDED NEXT WEEK.
+       * Replace this block with a fetch() POST to the backend endpoint.
+       * Example:
+       *   fetch('/api/register', { method: 'POST', body: new FormData(form) })
+       *     .then(res => res.json())
+       *     .then(data => showSuccess())
+       *     .catch(err => showError(err));
+       */
+
+      // Temporary UI feedback
+      const btn = form.querySelector('.btn-submit');
+      const original = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-check" style="margin-right:8px;"></i> Registered!';
+      btn.style.background = '#00C89A';
+      btn.style.borderColor = '#00C89A';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.style.background = '';
+        btn.style.borderColor = '';
+        btn.disabled = false;
+        form.reset();
+      }, 3000);
+    });
+
+    /* ── FAQ accordion ── */
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    }
+
+    /* ── Suggestion form submit ── */
+    function handleSuggestion(e) {
+      e.preventDefault();
+      e.target.classList.add('done');
+      document.getElementById('suggestion-success').classList.add('show');
+    }
+
+  </script>
+</body>
+</html>

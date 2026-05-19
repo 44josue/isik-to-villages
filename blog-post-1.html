@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our First Village Visit: What We Found in Ordu — Işık to Villages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-deep:       #1A0F26;
+      --bg-plum:       #2A1B38;
+      --bg-card:       #33204A;
+      --bg-card-hover: #3D2757;
+      --accent:        #00E5FF;
+      --accent-dim:    #00B8CC;
+      --accent-glow:   rgba(0, 229, 255, 0.18);
+      --accent-glow2:  rgba(0, 229, 255, 0.08);
+      --text-white:    #FFFFFF;
+      --text-cream:    #F5F5DC;
+      --text-muted:    #B0A0C8;
+      --border:        rgba(0, 229, 255, 0.15);
+      --border-strong: rgba(0, 229, 255, 0.35);
+      --font-main:     'Inter', sans-serif;
+      --font-display:  'Poppins', sans-serif;
+      --radius-sm:     8px;
+      --radius-md:     16px;
+      --radius-lg:     24px;
+      --transition:    0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--font-main); background-color: var(--bg-deep); color: var(--text-cream); line-height: 1.6; overflow-x: hidden; }
+    h1, h2, h3, h4, h5 { font-family: var(--font-display); color: var(--text-white); line-height: 1.25; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-dim); border-radius: 3px; }
+
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.5;
+    }
+
+    /* NAVBAR */
+    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 5%; height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(26, 15, 38, 0.82); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); box-shadow: 0 4px 32px rgba(0,0,0,0.3); }
+    .nav-logo { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; letter-spacing: 0.04em; color: var(--text-white); display: flex; align-items: center; gap: 10px; }
+    .nav-logo .logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--bg-deep); font-size: 1rem; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 0.88rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.02em; transition: color var(--transition); position: relative; }
+    .nav-links a.active, .nav-links a:hover { color: var(--text-white); }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width var(--transition); border-radius: 2px; }
+    .nav-links a.active::after, .nav-links a:hover::after { width: 100%; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: var(--radius-sm); font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: 2px solid transparent; transition: var(--transition); white-space: nowrap; letter-spacing: 0.02em; }
+    .btn-solid { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
+    .btn-solid:hover { background: transparent; color: var(--accent); box-shadow: 0 0 24px var(--accent-glow); }
+    .btn-outline { background: transparent; color: var(--accent); border-color: var(--accent); }
+    .btn-outline:hover { background: var(--accent); color: var(--bg-deep); }
+    .nav-cta { padding: 10px 22px; font-size: 0.85rem; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--text-cream); border-radius: 2px; transition: var(--transition); }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-mobile { display: none; position: fixed; top: 72px; left: 0; right: 0; background: rgba(26, 15, 38, 0.97); backdrop-filter: blur(20px); padding: 24px 5% 32px; border-bottom: 1px solid var(--border); flex-direction: column; gap: 20px; z-index: 999; }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a { font-size: 1.05rem; font-weight: 500; color: var(--text-cream); padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .nav-mobile .btn { margin-top: 8px; width: fit-content; }
+
+    /* ARTICLE LAYOUT */
+    .article-layout {
+      padding: 120px 0 100px;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* Hero image */
+    .article-hero-img {
+      width: 100%;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 40px;
+      border: 1px solid var(--border);
+    }
+    .article-hero-img img { width: 100%; height: 420px; object-fit: cover; display: block; }
+
+    /* Article header */
+    .article-breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px; }
+    .article-breadcrumb a { color: var(--accent); transition: opacity var(--transition); }
+    .article-breadcrumb a:hover { opacity: 0.8; }
+    .article-breadcrumb i { font-size: 0.65rem; }
+
+    .post-category { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: var(--accent-glow2); border: 1px solid var(--border-strong); border-radius: 100px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); width: fit-content; margin-bottom: 18px; }
+
+    .article-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 20px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 36px;
+    }
+    .article-meta-item { display: flex; align-items: center; gap: 8px; font-size: 0.83rem; color: var(--text-muted); }
+    .article-meta-item i { color: var(--accent); font-size: 0.78rem; }
+    .article-author { display: flex; align-items: center; gap: 10px; }
+    .author-avatar { width: 36px; height: 36px; background: var(--accent-glow); border: 1px solid var(--border-strong); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+    .author-name { font-size: 0.85rem; font-weight: 600; color: var(--text-cream); }
+
+    /* Article body */
+    .article-body { max-width: 680px; }
+    .article-body p { font-size: 1rem; color: var(--text-muted); line-height: 1.9; margin-bottom: 22px; }
+    .article-body h2 { font-size: 1.4rem; font-weight: 800; margin: 40px 0 16px; color: var(--text-white); }
+    .article-body h3 { font-size: 1.1rem; font-weight: 700; margin: 28px 0 12px; color: var(--text-cream); }
+    .article-body strong { color: var(--text-cream); font-weight: 600; }
+    .article-body ul, .article-body ol { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
+    .article-body ul li, .article-body ol li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.97rem; color: var(--text-muted); line-height: 1.75; }
+    .article-body ul li::before { content: ''; display: block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; flex-shrink: 0; margin-top: 10px; }
+    .article-body ol { counter-reset: list-counter; }
+    .article-body ol li { counter-increment: list-counter; }
+    .article-body ol li::before { content: counter(list-counter); display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; min-width: 22px; background: var(--accent-glow2); border: 1px solid var(--border-strong); border-radius: 50%; font-size: 0.7rem; font-weight: 700; color: var(--accent); margin-top: 2px; }
+
+    .article-pullquote {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 28px 32px;
+      margin: 36px 0;
+    }
+    .article-pullquote p {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--text-cream);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .article-pullquote cite { font-size: 0.82rem; color: var(--accent); font-style: normal; font-weight: 600; }
+
+    .article-img-caption { margin: 36px 0; }
+    .article-img-caption img { width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border); }
+    .article-img-caption figcaption { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 10px; font-style: italic; }
+
+    .article-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 36px 0;
+    }
+    .article-stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; text-align: center; }
+    .article-stat .num { font-family: var(--font-display); font-size: 2rem; font-weight: 900; color: var(--accent); display: block; margin-bottom: 4px; }
+    .article-stat .label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .article-tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .article-tag { padding: 5px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 100px; font-size: 0.78rem; color: var(--text-muted); transition: var(--transition); }
+    .article-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Share buttons */
+    .article-share { display: flex; align-items: center; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+    .article-share span { font-size: 0.82rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .share-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 600; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-muted); cursor: pointer; transition: var(--transition); }
+    .share-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Sidebar */
+    .article-sidebar { position: sticky; top: 96px; }
+    .sidebar-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; margin-bottom: 20px; }
+    .sidebar-card h6 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+    .sidebar-toc ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .sidebar-toc ul li a { display: block; font-size: 0.85rem; color: var(--text-muted); padding: 6px 10px; border-radius: var(--radius-sm); transition: var(--transition); border-left: 2px solid transparent; }
+    .sidebar-toc ul li a:hover { background: var(--accent-glow2); color: var(--accent); border-left-color: var(--accent); }
+
+    .related-post { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .related-post:last-child { border-bottom: none; padding-bottom: 0; }
+    .related-post-img { width: 60px; height: 60px; border-radius: var(--radius-sm); overflow: hidden; flex-shrink: 0; }
+    .related-post-img img { width: 100%; height: 100%; object-fit: cover; }
+    .related-post-text h6 { font-size: 0.82rem; font-weight: 600; color: var(--text-cream); line-height: 1.4; margin-bottom: 4px; }
+    .related-post-text span { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* FOOTER */
+    footer { background: var(--bg-deep); border-top: 1px solid var(--border); padding: 48px 0 32px; }
+    .footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.8; margin: 14px 0 20px; max-width: 280px; }
+    .social-links { display: flex; gap: 12px; }
+    .social-link { width: 38px; height: 38px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem; transition: var(--transition); cursor: pointer; }
+    .social-link:hover { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+    .footer-col h5 { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-cream); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a { font-size: 0.88rem; color: var(--text-muted); transition: color var(--transition); display: flex; align-items: center; gap: 6px; }
+    .footer-col ul li a:hover { color: var(--accent); }
+    .footer-col ul li a i { font-size: 0.7rem; }
+    .footer-bottom { padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-size: 0.82rem; color: var(--text-muted); }
+    .footer-copy a { color: var(--accent); }
+    .footer-badge { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted); }
+    .footer-badge i { color: var(--accent); }
+    .footer-handle { font-size: 0.82rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; opacity: 0.75; transition: opacity var(--transition); }
+    .footer-handle:hover { opacity: 1; }
+    #back-top { position: fixed; bottom: 32px; right: 32px; width: 44px; height: 44px; background: var(--accent); color: var(--bg-deep); border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; opacity: 0; transform: translateY(16px); transition: var(--transition); z-index: 900; box-shadow: 0 4px 20px rgba(0,229,255,0.3); }
+    #back-top.visible { opacity: 1; transform: translateY(0); }
+    #back-top:hover { transform: translateY(-3px); }
+
+    @media (max-width: 1024px) { .article-layout { grid-template-columns: 1fr; } .article-sidebar { position: static; } .footer-inner { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 768px) { .nav-links, .nav-cta { display: none; } .nav-hamburger { display: flex; } .article-stats-row { grid-template-columns: 1fr 1fr; } .footer-inner { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; } }
+  </style>
+</head>
+
+<body>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+      IŞIK TO <span>VILLAGES</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#get-involved">Get Involved</a></li>
+      <li><a href="index.html#donate">Donate</a></li>
+      <li><a href="drive.html">Drive</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+    </ul>
+    <a href="index.html#get-involved" class="btn btn-solid nav-cta">
+      <i class="fas fa-user-plus"></i> Join Club
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav-mobile" id="mobile-menu">
+    <a href="index.html" onclick="closeMobile()">Home</a>
+    <a href="index.html#projects" onclick="closeMobile()">Projects</a>
+    <a href="index.html#get-involved" onclick="closeMobile()">Get Involved</a>
+    <a href="index.html#donate" onclick="closeMobile()">Donate</a>
+    <a href="drive.html" onclick="closeMobile()">Drive</a>
+    <a href="blog.html" onclick="closeMobile()">Blog</a>
+    <a href="index.html#get-involved" class="btn btn-solid" onclick="closeMobile()">
+      <i class="fas fa-user-plus"></i> Join Club
+    </a>
+  </div>
+
+  <!-- ARTICLE -->
+  <div class="container">
+    <div class="article-layout">
+
+      <!-- Main content -->
+      <article>
+
+        <div class="article-breadcrumb">
+          <a href="index.html">Home</a>
+          <i class="fas fa-chevron-right"></i>
+          <a href="blog.html">Blog</a>
+          <i class="fas fa-chevron-right"></i>
+          <span>Village Visit: Ordu</span>
+        </div>
+
+        <div class="post-category"><i class="fas fa-map-location-dot"></i> Field Report</div>
+
+        <h1 class="article-title">Our First Village Visit: What We Found in Ordu</h1>
+
+        <div class="article-meta">
+          <div class="article-author">
+            <div class="author-avatar">SJ</div>
+            <div>
+              <div class="author-name">Shema Josue</div>
+              <div style="font-size:0.75rem; color:var(--text-muted)">Field Report</div>
+            </div>
+          </div>
+          <div class="article-meta-item"><i class="fas fa-calendar"></i> May 15, 2026</div>
+          <div class="article-meta-item"><i class="fas fa-clock"></i> 8 min read</div>
+          <div class="article-meta-item"><i class="fas fa-map-marker-alt"></i> Ordu, Turkey</div>
+        </div>
+
+        <div class="article-hero-img">
+          <img src="https://placehold.co/860x420/2A1B38/00E5FF?text=Ordu+Village+Visit+May+2026" alt="The team at Ordu village school" />
+        </div>
+
+        <div class="article-body">
+
+          <p>We left campus at 5 a.m. Seven students, one university van, forty books, twelve pencil cases, and a collective case of nerves. Six hours later, we pulled into a village in Ordu province that most of us had never heard of before March, when our club was just a shared Google Doc and a lot of enthusiasm.</p>
+
+          <p>This is the story of what happened when Işık to Villages went from plan to reality — and what it felt like to hand a child their first brand-new storybook.</p>
+
+          <h2 id="preparation">Getting There: Six Months of Preparation</h2>
+
+          <p>The visit didn't happen overnight. We spent months coordinating with the local school administration, getting university approval for the trip, collecting and sorting donated materials, and raising enough funds to cover transportation. <strong>The logistics were humbling.</strong> Things we hadn't thought about: how to pack 40 books so they don't arrive bent. How to communicate with a school principal when your Turkish is academic and theirs is regional dialect.</p>
+
+          <p>We also had to be intentional about what we brought. Early on, we made a rule: no used books with torn pages or missing covers. Every item we delivered should feel like it was chosen specifically for that child. That rule meant turning down some donations — a difficult call when every book feels valuable — but it was the right one.</p>
+
+          <div class="article-stats-row">
+            <div class="article-stat">
+              <span class="num">40</span>
+              <span class="label">Books Delivered</span>
+            </div>
+            <div class="article-stat">
+              <span class="num">12</span>
+              <span class="label">Pencil Cases</span>
+            </div>
+            <div class="article-stat">
+              <span class="num">28</span>
+              <span class="label">Students Reached</span>
+            </div>
+          </div>
+
+          <h2 id="arrival">Arrival: What the School Looks Like</h2>
+
+          <p>The school is a two-classroom building on the edge of the village. It serves 28 students across three grade levels, all taught by a single teacher named Mehmet Bey, who has worked there for eleven years. He greeted us at the gate, slightly skeptical — he'd had well-meaning outsiders visit before, people who came for photos and then didn't come back.</p>
+
+          <p>We spent an hour just talking before unpacking anything. He told us about the school's challenges: no school library, a limited budget for supplies, students who do their homework by phone flashlight when the power cuts out at night. He also told us about what the students were good at — particularly drawing and storytelling — and what books they'd most enjoy.</p>
+
+          <div class="article-pullquote">
+            <p>"The children here are clever. They just need materials that believe in them as much as I do."</p>
+            <cite>— Mehmet Bey, Class Teacher, Ordu Province</cite>
+          </div>
+
+          <h2 id="distribution">The Distribution</h2>
+
+          <p>We set the books out on desks before the students arrived. The team had sorted them by age range and subject the night before, with sticky notes matching books to grade levels based on what Mehmet Bey had told us. When the students came in, the room went quiet for a moment — and then it didn't.</p>
+
+          <p>A girl in the third grade, probably eight years old, picked up a picture book about the ocean and held it against her chest before she'd even read the title. A boy flipped through a science encyclopedia and immediately started reading aloud to a friend. One student asked, in a whisper, if he could keep the book or if we were taking it back.</p>
+
+          <p>We told him it was his. He read it on the bus ride home — we found out later from Mehmet Bey.</p>
+
+          <figure class="article-img-caption">
+            <img src="https://placehold.co/720x340/2A1B38/00E5FF?text=Students+Receiving+Books" alt="Students receiving books at the school" />
+            <figcaption>Students at the Ordu village school receiving books during the May 2026 visit.</figcaption>
+          </figure>
+
+          <h2 id="lessons">What We Learned</h2>
+
+          <p>No amount of planning fully prepares you for the reality of the gap between what these communities have and what they need. But a few things became clear on the drive home:</p>
+
+          <ul>
+            <li><strong>Relationships matter more than resources.</strong> The trust Mehmet Bey slowly extended to us was worth more than any box of books. We need to go back — not once, but every semester.</li>
+            <li><strong>Books are a starting point, not a solution.</strong> One distribution changes a classroom for a week. Sustained mentorship and regular supply replenishment changes it for a generation.</li>
+            <li><strong>Students know what they need.</strong> Asking the children what subjects they liked, what they struggled with, what they wished they had more of — those answers should shape our next supply run.</li>
+            <li><strong>Our team needs more language training.</strong> Half of us spoke limited Turkish and nearly all of us had zero experience with rural dialect. We're working on this before the next visit.</li>
+          </ul>
+
+          <h2 id="whats-next">What's Next</h2>
+
+          <p>We're already planning our second visit — this time to the Aydın school we've been in contact with since April. We're also setting a goal of returning to Ordu in September with a full classroom kit, including enough books to start a small library shelf.</p>
+
+          <p>If you want to help make the next visit possible, you can donate through our website or drop off supplies at our campus collection points. And if you're a student interested in joining the team for future field visits, we're recruiting. Come talk to us.</p>
+
+          <p>The boy on the bus read his book all the way home. That's why we do this.</p>
+
+          <!-- Tags -->
+          <div class="article-tag-row">
+            <span class="article-tag">#FieldReport</span>
+            <span class="article-tag">#Ordu</span>
+            <span class="article-tag">#1Book1Future</span>
+            <span class="article-tag">#RuralEducation</span>
+            <span class="article-tag">#Turkey</span>
+            <span class="article-tag">#StudentClub</span>
+          </div>
+
+          <!-- Share -->
+          <div class="article-share">
+            <span>Share</span>
+            <button class="share-btn"><i class="fab fa-twitter"></i> Twitter</button>
+            <button class="share-btn"><i class="fab fa-linkedin-in"></i> LinkedIn</button>
+            <button class="share-btn" onclick="navigator.clipboard && navigator.clipboard.writeText(window.location.href); this.innerHTML='<i class=\'fas fa-check\'></i> Copied!'">
+              <i class="fas fa-link"></i> Copy Link
+            </button>
+          </div>
+
+        </div>
+
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="article-sidebar">
+
+        <div class="sidebar-card sidebar-toc">
+          <h6>In This Article</h6>
+          <ul>
+            <li><a href="#preparation">Getting There</a></li>
+            <li><a href="#arrival">Arrival</a></li>
+            <li><a href="#distribution">The Distribution</a></li>
+            <li><a href="#lessons">What We Learned</a></li>
+            <li><a href="#whats-next">What's Next</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card">
+          <h6>More Posts</h6>
+          <div class="related-post">
+            <div class="related-post-img">
+              <img src="https://placehold.co/60x60/33204A/00E5FF?text=D" alt="Book Drive" />
+            </div>
+            <div class="related-post-text">
+              <h6>Book Drive Week Recap: 500+ Books Collected</h6>
+              <span>May 10, 2026</span>
+            </div>
+          </div>
+          <div class="related-post">
+            <div class="related-post-img">
+              <img src="https://placehold.co/60x60/33204A/00E5FF?text=T" alt="Team" />
+            </div>
+            <div class="related-post-text">
+              <h6>Meet the Faces Behind Işık To Villages</h6>
+              <span>May 5, 2026</span>
+            </div>
+          </div>
+          <div class="related-post">
+            <div class="related-post-img">
+              <img src="https://placehold.co/60x60/33204A/00E5FF?text=E" alt="Essay" />
+            </div>
+            <div class="related-post-text">
+              <h6>Why Rural Education Needs Our Attention</h6>
+              <span>April 28, 2026</span>
+            </div>
+          </div>
+          <a href="blog.html" style="display:block; text-align:center; margin-top:16px; font-size:0.82rem; color:var(--accent); font-weight:600;">
+            View All Posts <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="sidebar-card" style="text-align:center;">
+          <h6 style="margin-bottom:12px;">Support This Work</h6>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:20px; line-height:1.6;">Every donation directly funds the next village visit.</p>
+          <a href="index.html#donate" class="btn btn-solid" style="width:100%; justify-content:center; font-size:0.85rem; padding:12px 20px;">
+            <i class="fas fa-heart"></i> Donate Now
+          </a>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+            IŞIK TO <span>VILLAGES</span>
+          </a>
+          <p>A student club at FMV Işık University dedicated to bridging campus energy with rural education across Turkey.</p>
+          <div class="social-links">
+            <a class="social-link" href="https://www.instagram.com/group4helpschools" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a class="social-link" href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a class="social-link" href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+            <li><a href="index.html#projects"><i class="fas fa-chevron-right"></i> Projects</a></li>
+            <li><a href="index.html#get-involved"><i class="fas fa-chevron-right"></i> Get Involved</a></li>
+            <li><a href="index.html#donate"><i class="fas fa-chevron-right"></i> Donate</a></li>
+            <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms of Use</a></li>
+            <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+            <li><a href="index.html#suggestions"><i class="fas fa-chevron-right"></i> Suggestions</a></li>
+            <li><a href="mailto:isiktovillages@isik.edu.tr"><i class="fas fa-envelope"></i> Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 <a href="index.html">Işık to Villages</a>. All rights reserved.</p>
+        <a href="https://www.instagram.com/project__404" target="_blank" rel="noopener noreferrer" class="footer-handle">@project__404</a>
+        <div class="footer-badge"><i class="fas fa-heart"></i> Made with purpose by Işık University students</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    const backTop = document.getElementById('back-top');
+    window.addEventListener('scroll', () => { backTop.classList.toggle('visible', window.scrollY > 60); }, { passive: true });
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  </script>
+
+</body>
+</html>

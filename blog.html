@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Işık to Villages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-deep:       #1A0F26;
+      --bg-plum:       #2A1B38;
+      --bg-card:       #33204A;
+      --bg-card-hover: #3D2757;
+      --accent:        #00E5FF;
+      --accent-dim:    #00B8CC;
+      --accent-glow:   rgba(0, 229, 255, 0.18);
+      --accent-glow2:  rgba(0, 229, 255, 0.08);
+      --text-white:    #FFFFFF;
+      --text-cream:    #F5F5DC;
+      --text-muted:    #B0A0C8;
+      --border:        rgba(0, 229, 255, 0.15);
+      --border-strong: rgba(0, 229, 255, 0.35);
+      --font-main:     'Inter', sans-serif;
+      --font-display:  'Poppins', sans-serif;
+      --radius-sm:     8px;
+      --radius-md:     16px;
+      --radius-lg:     24px;
+      --transition:    0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-card:   0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--font-main); background-color: var(--bg-deep); color: var(--text-cream); line-height: 1.6; overflow-x: hidden; }
+    h1, h2, h3, h4, h5 { font-family: var(--font-display); color: var(--text-white); line-height: 1.2; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-dim); border-radius: 3px; }
+
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* NAVBAR */
+    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 5%; height: 72px; display: flex; align-items: center; justify-content: space-between; transition: var(--transition); background: rgba(26, 15, 38, 0.82); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); box-shadow: 0 4px 32px rgba(0,0,0,0.3); }
+    .nav-logo { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; letter-spacing: 0.04em; color: var(--text-white); display: flex; align-items: center; gap: 10px; }
+    .nav-logo .logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--bg-deep); font-size: 1rem; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 0.88rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.02em; transition: color var(--transition); position: relative; }
+    .nav-links a.active, .nav-links a:hover { color: var(--text-white); }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width var(--transition); border-radius: 2px; }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: var(--radius-sm); font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: 2px solid transparent; transition: var(--transition); white-space: nowrap; letter-spacing: 0.02em; }
+    .btn-solid { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
+    .btn-solid:hover { background: transparent; color: var(--accent); box-shadow: 0 0 24px var(--accent-glow); }
+    .btn-outline { background: transparent; color: var(--accent); border-color: var(--accent); }
+    .btn-outline:hover { background: var(--accent); color: var(--bg-deep); box-shadow: 0 0 24px var(--accent-glow); }
+    .nav-cta { padding: 10px 22px; font-size: 0.85rem; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--text-cream); border-radius: 2px; transition: var(--transition); }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-mobile { display: none; position: fixed; top: 72px; left: 0; right: 0; background: rgba(26, 15, 38, 0.97); backdrop-filter: blur(20px); padding: 24px 5% 32px; border-bottom: 1px solid var(--border); flex-direction: column; gap: 20px; z-index: 999; }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a { font-size: 1.05rem; font-weight: 500; color: var(--text-cream); padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .nav-mobile .btn { margin-top: 8px; width: fit-content; }
+
+    /* PAGE HEADER */
+    .page-header { padding: 140px 0 80px; position: relative; overflow: hidden; text-align: center; }
+    .page-header::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; background: var(--accent); border-radius: 50%; filter: blur(160px); opacity: 0.05; pointer-events: none; }
+    .page-header-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+    .section-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .section-label::before { content: ''; display: block; width: 28px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .page-title { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; margin-bottom: 16px; }
+    .page-title span { color: var(--accent); }
+    .page-sub { font-size: 1.05rem; color: var(--text-muted); line-height: 1.8; }
+    .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--border-strong), transparent); }
+
+    /* FILTER TABS */
+    .blog-filters { padding: 40px 0 0; }
+    .filter-tabs { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .filter-tab { padding: 8px 20px; border-radius: 100px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-muted); transition: var(--transition); font-family: var(--font-main); }
+    .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-tab.active { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
+
+    /* FEATURED POST */
+    .blog-section { padding: 60px 0 100px; }
+    .featured-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
+    .featured-label i { font-size: 0.8rem; }
+
+    .featured-post {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 64px;
+      transition: var(--transition);
+    }
+    .featured-post:hover { border-color: var(--border-strong); box-shadow: 0 16px 48px rgba(0,0,0,0.5); transform: translateY(-2px); }
+    .featured-img { position: relative; overflow: hidden; min-height: 360px; }
+    .featured-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .featured-post:hover .featured-img img { transform: scale(1.04); }
+    .featured-body { padding: 48px; display: flex; flex-direction: column; justify-content: center; }
+    .post-category { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: var(--accent-glow2); border: 1px solid var(--border-strong); border-radius: 100px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); width: fit-content; margin-bottom: 18px; }
+    .featured-body h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 16px; line-height: 1.25; }
+    .featured-body p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 28px; }
+    .post-meta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+    .post-meta-item { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-muted); }
+    .post-meta-item i { color: var(--accent); font-size: 0.75rem; }
+
+    /* BLOG GRID */
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+
+    .post-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .post-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-card); transform: translateY(-4px); }
+    .post-card-img { position: relative; overflow: hidden; height: 200px; }
+    .post-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .post-card:hover .post-card-img img { transform: scale(1.06); }
+    .post-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .post-card-body .post-category { margin-bottom: 14px; }
+    .post-card-body h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+    .post-card-body p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.75; flex: 1; margin-bottom: 20px; }
+    .post-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); }
+    .post-author { display: flex; align-items: center; gap: 10px; }
+    .author-avatar { width: 30px; height: 30px; background: var(--accent-glow); border: 1px solid var(--border-strong); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+    .author-name { font-size: 0.8rem; font-weight: 600; color: var(--text-cream); }
+    .post-date { font-size: 0.75rem; color: var(--text-muted); }
+    .read-more { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: var(--accent); transition: gap var(--transition); }
+    .read-more:hover { gap: 10px; }
+
+    /* NEWSLETTER BAR */
+    .newsletter-bar {
+      background: var(--bg-plum);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      text-align: center;
+      margin-top: 64px;
+    }
+    .newsletter-bar h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; }
+    .newsletter-bar p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 28px; }
+    .newsletter-form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .newsletter-form input { padding: 12px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-cream); font-family: var(--font-main); font-size: 0.9rem; outline: none; transition: border-color var(--transition); width: 300px; }
+    .newsletter-form input:focus { border-color: var(--accent); }
+    .newsletter-form input::placeholder { color: var(--text-muted); }
+
+    /* Reveal animation */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .post-card.hidden { display: none; }
+
+    /* FOOTER */
+    footer { background: var(--bg-deep); border-top: 1px solid var(--border); padding: 48px 0 32px; }
+    .footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.8; margin: 14px 0 20px; max-width: 280px; }
+    .social-links { display: flex; gap: 12px; }
+    .social-link { width: 38px; height: 38px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem; transition: var(--transition); cursor: pointer; }
+    .social-link:hover { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+    .footer-col h5 { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-cream); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a { font-size: 0.88rem; color: var(--text-muted); transition: color var(--transition); display: flex; align-items: center; gap: 6px; }
+    .footer-col ul li a:hover { color: var(--accent); }
+    .footer-col ul li a i { font-size: 0.7rem; }
+    .footer-bottom { padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-size: 0.82rem; color: var(--text-muted); }
+    .footer-copy a { color: var(--accent); }
+    .footer-badge { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted); }
+    .footer-badge i { color: var(--accent); }
+    .footer-handle { font-size: 0.82rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; opacity: 0.75; transition: opacity var(--transition); }
+    .footer-handle:hover { opacity: 1; }
+    #back-top { position: fixed; bottom: 32px; right: 32px; width: 44px; height: 44px; background: var(--accent); color: var(--bg-deep); border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; opacity: 0; transform: translateY(16px); transition: var(--transition); z-index: 900; box-shadow: 0 4px 20px rgba(0,229,255,0.3); }
+    #back-top.visible { opacity: 1; transform: translateY(0); }
+    #back-top:hover { transform: translateY(-3px); }
+
+    @media (max-width: 1024px) { .featured-post { grid-template-columns: 1fr; } .featured-img { min-height: 260px; } .blog-grid { grid-template-columns: 1fr 1fr; } .footer-inner { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 768px) { .nav-links, .nav-cta { display: none; } .nav-hamburger { display: flex; } .blog-grid { grid-template-columns: 1fr; } .featured-body { padding: 28px; } .footer-inner { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; } .newsletter-form input { width: 100%; } }
+  </style>
+</head>
+
+<body>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+      IŞIK TO <span>VILLAGES</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#get-involved">Get Involved</a></li>
+      <li><a href="index.html#donate">Donate</a></li>
+      <li><a href="drive.html">Drive</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+    </ul>
+    <a href="index.html#get-involved" class="btn btn-solid nav-cta">
+      <i class="fas fa-user-plus"></i> Join Club
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav-mobile" id="mobile-menu">
+    <a href="index.html" onclick="closeMobile()">Home</a>
+    <a href="index.html#projects" onclick="closeMobile()">Projects</a>
+    <a href="index.html#get-involved" onclick="closeMobile()">Get Involved</a>
+    <a href="index.html#donate" onclick="closeMobile()">Donate</a>
+    <a href="drive.html" onclick="closeMobile()">Drive</a>
+    <a href="blog.html" onclick="closeMobile()">Blog</a>
+    <a href="index.html#get-involved" class="btn btn-solid" onclick="closeMobile()">
+      <i class="fas fa-user-plus"></i> Join Club
+    </a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="container">
+      <div class="page-header-inner">
+        <span class="section-label"><i class="fas fa-pen-nib"></i> From the Team</span>
+        <h1 class="page-title">Our <span>Blog</span></h1>
+        <p class="page-sub">Stories, field reports, and updates from our journey to bridge campus energy with rural communities.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FILTER TABS -->
+  <div class="blog-filters">
+    <div class="container">
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterPosts('all', this)">All Posts</button>
+        <button class="filter-tab" onclick="filterPosts('field-report', this)">Field Reports</button>
+        <button class="filter-tab" onclick="filterPosts('update', this)">Updates</button>
+        <button class="filter-tab" onclick="filterPosts('team', this)">Team Stories</button>
+        <button class="filter-tab" onclick="filterPosts('essay', this)">Essays</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOG SECTION -->
+  <section class="blog-section">
+    <div class="container">
+
+      <!-- Featured Post -->
+      <div class="featured-label reveal">
+        <i class="fas fa-star"></i> Featured Post
+      </div>
+
+      <a href="blog-post-1.html" class="featured-post reveal" data-category="field-report">
+        <div class="featured-img">
+          <img src="https://placehold.co/680x400/2A1B38/00E5FF?text=Village+Visit+Ordu" alt="Our First Village Visit" />
+        </div>
+        <div class="featured-body">
+          <div class="post-category"><i class="fas fa-map-location-dot"></i> Field Report</div>
+          <h2>Our First Village Visit: What We Found in Ordu</h2>
+          <p>Forty books, twelve pencil cases, and a van full of nervous first-timers. Here's what happened when our team made the six-hour drive to Ordu province and met the students we'd been working to support.</p>
+          <div class="post-meta">
+            <div class="post-meta-item"><i class="fas fa-calendar"></i> May 15, 2026</div>
+            <div class="post-meta-item"><i class="fas fa-clock"></i> 8 min read</div>
+            <div class="post-meta-item"><i class="fas fa-user"></i> Shema Josue</div>
+          </div>
+          <span class="btn btn-outline" style="width:fit-content;">
+            <i class="fas fa-arrow-right"></i> Read Full Story
+          </span>
+        </div>
+      </a>
+
+      <!-- Blog Grid -->
+      <div class="blog-grid" id="blog-grid">
+
+        <div class="post-card reveal reveal-delay-1" data-category="update">
+          <div class="post-card-img">
+            <img src="https://placehold.co/420x220/33204A/00E5FF?text=Book+Drive" alt="Book Drive Recap" />
+          </div>
+          <div class="post-card-body">
+            <div class="post-category"><i class="fas fa-box-open"></i> Update</div>
+            <h3>Book Drive Week Recap: 500+ Books Collected</h3>
+            <p>One week, four campus drop-off points, and more donated books than we expected. Here's how our inaugural collection drive went — and what we learned for next time.</p>
+            <div class="post-meta" style="margin-bottom:0;">
+              <div class="post-meta-item"><i class="fas fa-calendar"></i> May 10, 2026</div>
+              <div class="post-meta-item"><i class="fas fa-clock"></i> 4 min read</div>
+            </div>
+          </div>
+          <div class="post-card-footer">
+            <div class="post-author">
+              <div class="author-avatar">WH</div>
+              <span class="author-name">Warris Hasan</span>
+            </div>
+            <a class="read-more" href="blog-post-2.html">Read <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="post-card reveal reveal-delay-2" data-category="team">
+          <div class="post-card-img">
+            <img src="https://placehold.co/420x220/33204A/00E5FF?text=Meet+The+Team" alt="Meet the Team" />
+          </div>
+          <div class="post-card-body">
+            <div class="post-category"><i class="fas fa-users"></i> Team Stories</div>
+            <h3>Meet the Faces Behind Işık To Villages</h3>
+            <p>We're students, just like you. Get to know the seven founding members of the club and why each of us decided this initiative was worth building from scratch.</p>
+            <div class="post-meta" style="margin-bottom:0;">
+              <div class="post-meta-item"><i class="fas fa-calendar"></i> May 5, 2026</div>
+              <div class="post-meta-item"><i class="fas fa-clock"></i> 6 min read</div>
+            </div>
+          </div>
+          <div class="post-card-footer">
+            <div class="post-author">
+              <div class="author-avatar">MK</div>
+              <span class="author-name">Mert Kaan</span>
+            </div>
+            <a class="read-more" href="blog-post-3.html">Read <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="post-card reveal reveal-delay-3" data-category="essay">
+          <div class="post-card-img">
+            <img src="https://placehold.co/420x220/33204A/00E5FF?text=Rural+Education" alt="Rural Education Essay" />
+          </div>
+          <div class="post-card-body">
+            <div class="post-category"><i class="fas fa-graduation-cap"></i> Essay</div>
+            <h3>Why Rural Education Needs Our Attention Right Now</h3>
+            <p>The education gap between urban and rural Turkey isn't new — but it's widening. A look at the data, the stories we've heard, and why university students are uniquely positioned to help.</p>
+            <div class="post-meta" style="margin-bottom:0;">
+              <div class="post-meta-item"><i class="fas fa-calendar"></i> April 28, 2026</div>
+              <div class="post-meta-item"><i class="fas fa-clock"></i> 10 min read</div>
+            </div>
+          </div>
+          <div class="post-card-footer">
+            <div class="post-author">
+              <div class="author-avatar">RN</div>
+              <span class="author-name">Rahima Noor</span>
+            </div>
+            <a class="read-more" href="blog-post-4.html">Read <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="post-card reveal" data-category="team">
+          <div class="post-card-img">
+            <img src="https://placehold.co/420x220/33204A/00E5FF?text=Volunteer+Spotlight" alt="Volunteer Spotlight" />
+          </div>
+          <div class="post-card-body">
+            <div class="post-category"><i class="fas fa-star"></i> Team Stories</div>
+            <h3>Volunteer Spotlight: How Students Are Making a Difference</h3>
+            <p>Profiles of three club members who've gone above and beyond this semester — organizing collection events, building relationships with schools, and keeping the team motivated.</p>
+            <div class="post-meta" style="margin-bottom:0;">
+              <div class="post-meta-item"><i class="fas fa-calendar"></i> April 20, 2026</div>
+              <div class="post-meta-item"><i class="fas fa-clock"></i> 5 min read</div>
+            </div>
+          </div>
+          <div class="post-card-footer">
+            <div class="post-author">
+              <div class="author-avatar">BY</div>
+              <span class="author-name">Baran Yöngel</span>
+            </div>
+            <a class="read-more" href="blog-post-5.html">Read <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="post-card reveal reveal-delay-1" data-category="update">
+          <div class="post-card-img">
+            <img src="https://placehold.co/420x220/33204A/00E5FF?text=Partnership+Announcement" alt="Partnership" />
+          </div>
+          <div class="post-card-body">
+            <div class="post-category"><i class="fas fa-handshake"></i> Update</div>
+            <h3>New School Partnership: Aydın Province Confirmed</h3>
+            <p>We're thrilled to announce our second school partnership in Aydın province. This brings our total to two confirmed schools for our first supply distribution in June 2026.</p>
+            <div class="post-meta" style="margin-bottom:0;">
+              <div class="post-meta-item"><i class="fas fa-calendar"></i> April 12, 2026</div>
+              <div class="post-meta-item"><i class="fas fa-clock"></i> 3 min read</div>
+            </div>
+          </div>
+          <div class="post-card-footer">
+            <div class="post-author">
+              <div class="author-avatar">İT</div>
+              <span class="author-name">İskender Tunç</span>
+            </div>
+            <a class="read-more" href="blog-post-6.html">Read <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="post-card reveal reveal-delay-2" data-category="essay">
+          <div class="post-card-img">
+            <img src="https://placehold.co/420x220/33204A/00E5FF?text=Starting+A+Club" alt="Starting a Club" />
+          </div>
+          <div class="post-card-body">
+            <div class="post-category"><i class="fas fa-seedling"></i> Essay</div>
+            <h3>From Idea to Initiative: How We Started in 3 Weeks</h3>
+            <p>We had an idea in March, a name in April, and a website by May. A behind-the-scenes look at how a group of students turned a conversation into a functioning club — fast.</p>
+            <div class="post-meta" style="margin-bottom:0;">
+              <div class="post-meta-item"><i class="fas fa-calendar"></i> April 5, 2026</div>
+              <div class="post-meta-item"><i class="fas fa-clock"></i> 7 min read</div>
+            </div>
+          </div>
+          <div class="post-card-footer">
+            <div class="post-author">
+              <div class="author-avatar">MH</div>
+              <span class="author-name">Muhammad Hammad</span>
+            </div>
+            <a class="read-more" href="blog-post-7.html">Read <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Newsletter signup -->
+      <div class="newsletter-bar reveal">
+        <h3>Stay in the <span style="color:var(--accent)">Loop</span></h3>
+        <p>Get new posts and club updates delivered to your inbox. No spam — just stories that matter.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="your@email.com" />
+          <button class="btn btn-solid" onclick="this.previousElementSibling.value && (this.textContent = '✓ Subscribed!')">
+            <i class="fas fa-bell"></i> Subscribe
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+            IŞIK TO <span>VILLAGES</span>
+          </a>
+          <p>A student club at FMV Işık University dedicated to bridging campus energy with rural education across Turkey.</p>
+          <div class="social-links">
+            <a class="social-link" href="https://www.instagram.com/group4helpschools" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a class="social-link" href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a class="social-link" href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+            <li><a href="index.html#projects"><i class="fas fa-chevron-right"></i> Projects</a></li>
+            <li><a href="index.html#get-involved"><i class="fas fa-chevron-right"></i> Get Involved</a></li>
+            <li><a href="index.html#donate"><i class="fas fa-chevron-right"></i> Donate</a></li>
+            <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="terms.html"><i class="fas fa-chevron-right"></i> Terms of Use</a></li>
+            <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+            <li><a href="index.html#suggestions"><i class="fas fa-chevron-right"></i> Suggestions</a></li>
+            <li><a href="mailto:isiktovillages@isik.edu.tr"><i class="fas fa-envelope"></i> Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 <a href="index.html">Işık to Villages</a>. All rights reserved.</p>
+        <a href="https://www.instagram.com/project__404" target="_blank" rel="noopener noreferrer" class="footer-handle">@project__404</a>
+        <div class="footer-badge"><i class="fas fa-heart"></i> Made with purpose by Işık University students</div>
+      </div>
+    </div>
+  </footer>
+
+  <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script>
+    const backTop = document.getElementById('back-top');
+    window.addEventListener('scroll', () => { backTop.classList.toggle('visible', window.scrollY > 60); }, { passive: true });
+
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function filterPosts(category, btn) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('[data-category]').forEach(card => {
+        card.classList.toggle('hidden', category !== 'all' && card.dataset.category !== category);
+      });
+    }
+
+    /* Scroll reveal */
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => revealObs.observe(el));
+  </script>
+
+</body>
+</html>
