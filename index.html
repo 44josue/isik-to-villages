@@ -1514,7 +1514,7 @@
 
     .footer-inner {
       display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
       gap: 48px;
       margin-bottom: 48px;
     }
@@ -1677,9 +1677,24 @@
     }
 
     @media (max-width: 480px) {
+      section { padding: 56px 0; }
       .hero-actions { flex-direction: column; }
       .hero-actions .btn { width: 100%; justify-content: center; }
       .form-card { padding: 28px 20px; }
+      .section-title { font-size: 1.6rem; }
+      .hero-h1 { font-size: 2rem; }
+      .tier-card { padding: 28px 20px; }
+      .mini-card { padding: 22px 18px; }
+      .suggestions-form-wrap { padding: 24px 16px; }
+      .faq-answer { padding: 12px 16px; }
+      .footer-inner { gap: 24px; }
+      footer { padding: 36px 0 24px; }
+      .nav-logo { font-size: 0.95rem; }
+      .nav-logo .logo-icon { width: 30px; height: 30px; font-size: 0.85rem; }
+      .btn { padding: 12px 22px; font-size: 0.85rem; }
+      .section-sub { font-size: 0.95rem; }
+      .hero-badge { font-size: 0.7rem; }
+      .donate-header { margin-bottom: 40px; }
     }
   </style>
 </head>
@@ -2396,7 +2411,7 @@
   ═══════════════════════════════════════════ -->
   <footer>
     <div class="container">
-      <div class="footer-inner" style="grid-template-columns: 1.4fr 1fr 1fr 1fr;">
+      <div class="footer-inner">
 
         <div class="footer-brand">
           <a href="#home" class="nav-logo">
